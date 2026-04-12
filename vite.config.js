@@ -6,4 +6,12 @@ export default defineConfig({
   resolve: {
     alias: { "@": "/app" },
   },
+  server: {
+    proxy: {
+      "/api": {
+        target: "http://localhost:9000",
+        changeOrigin: true,
+      },
+    },
+  },
 });

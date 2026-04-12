@@ -11,20 +11,25 @@
             <div class="field">
               <label class="mono">Card Type</label>
               <select v-model="cardType">
-                <option value="stats">Stats Card</option>
-                <option value="top-langs">Top Languages</option>
-                <option value="streak">Streak Card</option>
-                <option value="social">Social Card</option>
-                <option value="trophy">Trophy Card</option>
-                <option value="pin">Repo Pin</option>
-                <option value="gist">Gist Card</option>
-                <option value="wakatime">WakaTime</option>
+                <optgroup label="✨ Highlights">
+                  <option value="profile">Profile Highlight ✨</option>
+                </optgroup>
+                <optgroup label="Developer Cards">
+                  <option value="stats">Stats Card</option>
+                  <option value="top-langs">Top Languages</option>
+                  <option value="streak">Streak Card</option>
+                  <option value="social">Social Card</option>
+                  <option value="trophy">Trophy Card</option>
+                  <option value="pin">Repo Pin</option>
+                  <option value="gist">Gist Card</option>
+                  <option value="wakatime">WakaTime</option>
+                </optgroup>
               </select>
             </div>
 
             <div class="field" v-if="cardType !== 'gist'">
               <label class="mono">{{ cardType === 'wakatime' ? 'WakaTime Username' : 'GitHub Username' }}</label>
-              <input v-model="username" type="text" :placeholder="cardType === 'wakatime' ? 'your_wakatime_user' : 'degabrielofi'" />
+              <input v-model="username" type="text" :placeholder="cardType === 'wakatime' ? 'your_wakatime_user' : 'degabrielofi'" @input="previewError = ''" />
             </div>
 
             <div class="field" v-if="cardType === 'pin'">
@@ -116,7 +121,11 @@
             <div v-if="!generatedUrl" class="preview-placeholder mono">
               Type a {{ cardType === 'gist' ? 'Gist ID' : 'username' }} to preview
             </div>
-            <img v-else :src="generatedUrl" alt="Card Preview" class="preview-img" @error="onImgError" @load="onImgLoad" />
+            <div v-else-if="previewError" class="preview-placeholder mono preview-error">
+              {{ previewError }}
+            </div>
+            <img v-else :src="generatedUrl" alt="Card Preview" class="preview-img"
+              @error="onImgError" @load="onImgLoad" :key="generatedUrl" />
           </div>
 
           <div class="code-block">
@@ -185,6 +194,7 @@ const countPrivate = ref(true);
 const hideRank = ref(false);
 const codeTab = ref("md");
 const copied = ref(false);
+const previewError = ref("");
 
 // ── Theme lists ────────────────────────
 const gueblyThemeNames = [
@@ -211,6 +221,7 @@ const generatedUrl = computed(() => {
     streak: "/api/streak",
     social: "/api/social",
     trophy: "/api/trophy",
+    profile: "/api/profile",
   };
 
   if (cardType.value === "gist") {
@@ -266,8 +277,12 @@ const copyCode = async () => {
 };
 
 // ── Image handlers ─────────────────────
-const onImgError = () => {};
-const onImgLoad = () => {};
+const onImgError = () => {
+  previewError.value = "Could not load card — check the username and try again.";
+};
+const onImgLoad = () => {
+  previewError.value = "";
+};
 
 // ── Share & Download ───────────────────
 const downloading = ref(false);
@@ -276,29 +291,45 @@ const downloadPng = async () => {
   if (!generatedUrl.value || downloading.value) return;
   downloading.value = true;
   try {
+    // Fetch SVG as text (same-origin → no CORS issue, no canvas taint)
+    const response = await fetch(generatedUrl.value + "&_dl=1");
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}`);
+    }
+    const svgText = await response.text();
+
+    // Create a blob URL so the img.src is "local" — canvas won't be tainted
+    const svgBlob = new Blob([svgText], { type: "image/svg+xml;charset=utf-8" });
+    const blobUrl = URL.createObjectURL(svgBlob);
+
     const img = new Image();
-    img.crossOrigin = "anonymous";
     await new Promise((resolve, reject) => {
       img.onload = resolve;
       img.onerror = reject;
-      img.src = generatedUrl.value + "&bust=" + Date.now();
+      img.src = blobUrl;
     });
-    const canvas = document.createElement("canvas");
+
     const scale = 2;
+    const canvas = document.createElement("canvas");
     canvas.width = (img.naturalWidth || 495) * scale;
     canvas.height = (img.naturalHeight || 200) * scale;
     const ctx = canvas.getContext("2d");
     ctx.scale(scale, scale);
     ctx.drawImage(img, 0, 0);
-    canvas.toBlob((blob) => {
-      const a = document.createElement("a");
-      a.href = URL.createObjectURL(blob);
-      a.download = `guebly-stats-${cardType.value}.png`;
-      a.click();
-      URL.revokeObjectURL(a.href);
-    }, "image/png");
+    URL.revokeObjectURL(blobUrl);
+
+    await new Promise((resolve) => {
+      canvas.toBlob((blob) => {
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(blob);
+        a.download = `guebly-${cardType.value}-${(username.value || gistId.value || "card").trim()}.png`;
+        a.click();
+        setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+        resolve();
+      }, "image/png");
+    });
   } catch {
-    alert("Não foi possível gerar o PNG. Tente salvar a imagem diretamente pelo navegador.");
+    alert("Não foi possível gerar o PNG. Tente salvar a imagem clicando com o botão direito nela.");
   } finally {
     downloading.value = false;
   }
@@ -405,7 +436,8 @@ select option { background: var(--surface-2); color: var(--text); }
     radial-gradient(ellipse at 20% 50%, var(--accent-subtle) 0%, transparent 50%),
     radial-gradient(ellipse at 80% 50%, #22d3ee08 0%, transparent 50%);
 }
-.preview-placeholder { color: var(--text-muted); font-size: 14px; z-index: 1; }
+.preview-placeholder { color: var(--text-muted); font-size: 14px; z-index: 1; text-align: center; }
+.preview-error { color: #f87171; font-size: 13px; }
 .preview-img {
   max-width: 100%; height: auto; border-radius: 8px;
   position: relative; z-index: 1;
