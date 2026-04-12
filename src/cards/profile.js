@@ -215,14 +215,14 @@ export const renderProfileCard = (profile, options = {}) => {
     .map(
       (s, i) => `
       <g transform="translate(${24 + i * colW + colW / 2}, 0)">
-        <g transform="translate(-5, 1) scale(0.625)">
+        <g transform="translate(-5, 0) scale(0.625)">
           <path d="${s.icon}" fill="${iconColor}" opacity="0.65"/>
         </g>
-        <text text-anchor="middle" y="23"
+        <text text-anchor="middle" y="27"
           font-size="17" font-weight="800"
           font-family="'Segoe UI', Ubuntu, Sans-Serif"
           fill="${titleColor}">${escapeHTML(s.value)}</text>
-        <text text-anchor="middle" y="36"
+        <text text-anchor="middle" y="41"
           font-size="9.5" font-family="'Segoe UI', Ubuntu, Sans-Serif"
           fill="${textColor}" opacity="0.5">${escapeHTML(s.label)}</text>
       </g>`,
