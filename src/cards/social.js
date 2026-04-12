@@ -7,7 +7,7 @@ import { wrapText } from "../common/fmt.js";
 /**
  * @param {object} social Social data.
  * @param {object} options Card options.
- * @returns {string} SVG card markup.
+ * @returns {string} SVG story card (450×800, 9:16).
  */
 export const renderSocialCard = (social, options = {}) => {
   const {
@@ -41,38 +41,44 @@ export const renderSocialCard = (social, options = {}) => {
     ? 'stroke-opacity="0"'
     : `stroke="${borderColor}"`;
 
-  // ── Avatar ───────────────────────────────────────────────────────
+  // ── Avatar ────────────────────────────────────────────────────────
   const avatarCX = 225;
-  const avatarCY = 120;
-  const avatarR = 68;
+  const avatarCY = 110;
+  const avatarR = 65;
 
   const avatarInitial = escapeHTML(
     ((social.name || social.login || "?")[0] || "?").toUpperCase(),
   );
 
   const avatarInner = social.avatarUrl
-    ? `<clipPath id="avc-story-${escapeHTML(social.login)}">
+    ? `<clipPath id="avc-s-${escapeHTML(social.login)}">
          <circle cx="${avatarCX}" cy="${avatarCY}" r="${avatarR}"/>
        </clipPath>
        <image x="${avatarCX - avatarR}" y="${avatarCY - avatarR}"
          width="${avatarR * 2}" height="${avatarR * 2}"
-         clip-path="url(#avc-story-${escapeHTML(social.login)})"
+         clip-path="url(#avc-s-${escapeHTML(social.login)})"
          href="${social.avatarUrl}"
          preserveAspectRatio="xMidYMid slice"/>`
     : `<circle cx="${avatarCX}" cy="${avatarCY}" r="${avatarR}"
          fill="${iconColor}" opacity="0.1"/>
-       <text x="${avatarCX}" y="${avatarCY + 18}" text-anchor="middle"
-         font-size="48" font-weight="700"
+       <text x="${avatarCX}" y="${avatarCY + 17}" text-anchor="middle"
+         font-size="46" font-weight="700"
          font-family="'Segoe UI',Ubuntu,Sans-Serif"
          fill="${iconColor}">${avatarInitial}</text>`;
 
-  // ── Bio ──────────────────────────────────────────────────────────
+  // ── Identity (name + @login) ──────────────────────────────────────
+  // Avatar bottom = avatarCY + avatarR = 175; name starts 28px below.
+  const nameY = 210;
+  const loginY = 232;
+
+  // ── Bio ───────────────────────────────────────────────────────────
   const bioLines = social.bio ? wrapText(social.bio, 42, 3) : [];
-  const bioStartY = 240;
+  // Bio starts 28px below @login baseline.
+  const bioStartY = 266;
   const bioSvg = bioLines
     .map(
       (line, i) =>
-        `<text x="${width / 2}" y="${bioStartY + i * 20}" text-anchor="middle"
+        `<text x="${width / 2}" y="${bioStartY + i * 22}" text-anchor="middle"
           font-size="13" font-style="italic"
           font-family="'Segoe UI',Ubuntu,Sans-Serif"
           fill="${textColor}" opacity="0.7">${escapeHTML(line)}</text>`,
@@ -89,32 +95,33 @@ export const renderSocialCard = (social, options = {}) => {
 
   const infoData = [];
   if (social.location) {
-    infoData.push({ path: pinPath, text: social.location.slice(0, 30) });
+    infoData.push({ path: pinPath, text: social.location.slice(0, 32) });
   }
   if (social.company) {
     infoData.push({
       path: buildingPath,
-      text: social.company.replace(/^@/, "").slice(0, 30),
+      text: social.company.replace(/^@/, "").slice(0, 32),
     });
   }
   if (social.website) {
     infoData.push({
       path: linkPath,
-      text: social.website.replace(/^https?:\/\//, "").slice(0, 32),
+      text: social.website.replace(/^https?:\/\//, "").slice(0, 34),
     });
   }
 
+  // Info starts below last bio line (22px per bio line + 18px gap).
   const infoBaseY =
-    bioStartY + bioLines.length * 20 + (bioLines.length > 0 ? 14 : 0);
+    bioStartY + bioLines.length * 22 + (bioLines.length > 0 ? 18 : 0);
 
   const infoSvg = infoData
     .map((item, i) => {
-      const lineY = infoBaseY + i * 22 + 16;
+      const lineY = infoBaseY + i * 24 + 18;
       const textWidth = item.text.length * 6.6;
       const totalW = 16 + 6 + textWidth;
       const startX = (width - Math.min(totalW, width - 48)) / 2;
       return `
-        <g transform="translate(${startX}, ${lineY - 11}) scale(0.75)">
+        <g transform="translate(${startX}, ${lineY - 12}) scale(0.75)">
           <path d="${item.path}" fill="${textColor}" opacity="0.4"/>
         </g>
         <text x="${startX + 14}" y="${lineY}"
@@ -123,13 +130,12 @@ export const renderSocialCard = (social, options = {}) => {
     })
     .join("");
 
-  // ── Divider position ──────────────────────────────────────────────
-  const dividerY = Math.max(
-    infoBaseY + infoData.length * 22 + 30,
-    bioLines.length === 0 && infoData.length === 0 ? 238 : 300,
-  );
+  // ── Section divider ───────────────────────────────────────────────
+  const afterInfo =
+    infoBaseY + infoData.length * 24 + (infoData.length > 0 ? 22 : 0);
+  const dividerY = Math.max(afterInfo + 18, 360);
 
-  // ── Stats icons ───────────────────────────────────────────────────
+  // ── Stats ─────────────────────────────────────────────────────────
   const repoIcon =
     "M2 2.5A2.5 2.5 0 014.5 0h8.75a.75.75 0 01.75.75v12.5a.75.75 0 01-.75.75h-2.5a.75.75 0 110-1.5h1.75v-2h-8a1 1 0 00-.714 1.7.75.75 0 01-1.072 1.05A2.495 2.495 0 012 11.5v-9zm10.5-1h-8a1 1 0 00-1 1v6.708A2.486 2.486 0 014.5 9h8.5V1.5z";
   const starIcon =
@@ -141,39 +147,40 @@ export const renderSocialCard = (social, options = {}) => {
   const followingIcon =
     "M6 3.5a2.5 2.5 0 100 5 2.5 2.5 0 000-5zM2 6a4 4 0 116.663 3.003A6.001 6.001 0 0111.35 13h1.4a.75.75 0 010 1.5H1.25a.75.75 0 010-1.5h1.351A6.001 6.001 0 015.337 9.003 4.002 4.002 0 012 6zm11.5-3.5a.75.75 0 01.75.75v1.5h1.5a.75.75 0 010 1.5h-1.5v1.5a.75.75 0 01-1.5 0V6.25h-1.5a.75.75 0 010-1.5h1.5v-1.5a.75.75 0 01.75-.75z";
 
-  // ── Stats layout (2+2+1) ──────────────────────────────────────────
+  // Labels written for a non-technical audience.
   const statsData = [
     {
       icon: commitIcon,
       value: String(formatNumber(social.contributions || 0)),
-      label: "Contributions",
+      label: "Atividade no GitHub",
     },
     {
       icon: followersIcon,
       value: String(formatNumber(social.followers)),
-      label: "Followers",
+      label: "Seguidores",
     },
     {
       icon: followingIcon,
       value: String(formatNumber(social.following)),
-      label: "Following",
+      label: "Seguindo",
     },
     {
       icon: repoIcon,
       value: String(formatNumber(social.repos)),
-      label: "Repos",
+      label: "Projetos criados",
     },
     {
       icon: starIcon,
       value: String(formatNumber(social.stars)),
-      label: "Starred",
+      label: "Projetos favoritados",
     },
   ];
 
+  // 2+2+1 layout: two columns for rows 1-2, centered for row 3.
   const colL = 113;
   const colR = 337;
-  const rowSpacing = 100;
-  const statsStartY = dividerY + 68;
+  const rowSpacing = 92;
+  const statsStartY = dividerY + 66;
 
   const statPositions = [
     { x: colL, y: statsStartY },
@@ -183,12 +190,17 @@ export const renderSocialCard = (social, options = {}) => {
     { x: width / 2, y: statsStartY + rowSpacing * 2 },
   ];
 
+  // Icon scale 1.25 → 20 px rendered from 16-unit path.
+  const iconScale = 1.25;
+  const iconHalf = (16 * iconScale) / 2; // 10
+  const iconAbove = Math.round(16 * iconScale) + 14; // 34 px above value baseline
+
   const statsSvg = statsData
     .map((s, i) => {
       const { x, y } = statPositions[i];
       return `
-        <g transform="translate(${x - 8}, ${y - 46})">
-          <path d="${s.icon}" fill="${iconColor}" opacity="0.7"/>
+        <g transform="translate(${x - iconHalf}, ${y - iconAbove}) scale(${iconScale})">
+          <path d="${s.icon}" fill="${iconColor}" opacity="0.75"/>
         </g>
         <text x="${x}" y="${y}" text-anchor="middle"
           font-size="26" font-weight="800"
@@ -200,13 +212,12 @@ export const renderSocialCard = (social, options = {}) => {
     })
     .join("");
 
-  // vertical col divider between the two columns
-  const colDividerX = width / 2;
-  const colDividerY1 = dividerY + 20;
-  const colDividerY2 = statsStartY + rowSpacing + 38;
+  // Vertical divider separates the two columns on rows 1-2.
+  const colDivTop = dividerY + 14;
+  const colDivBottom = statsStartY + rowSpacing + 36;
 
-  const bottomDividerY = statsStartY + rowSpacing * 2 + 52;
-  const brandingY = bottomDividerY + 36;
+  const bottomDividerY = statsStartY + rowSpacing * 2 + 50;
+  const brandingY = bottomDividerY + 34;
 
   return `
     <svg width="${width}" height="${height}" viewBox="0 0 ${width} ${height}"
@@ -217,43 +228,44 @@ export const renderSocialCard = (social, options = {}) => {
       <rect x="0.5" y="0.5" rx="${rx}" width="${width - 1}" height="${height - 1}"
         fill="${bgFill}" ${borderAttr}/>
 
-      <!-- ── Avatar ring ── -->
+      <!-- Avatar ring + image/initial -->
       <circle cx="${avatarCX}" cy="${avatarCY}" r="${avatarR + 3}"
         stroke="${iconColor}" stroke-width="1.5" fill="none" opacity="0.3"/>
       ${avatarInner}
 
-      <!-- ── Identity ── -->
-      <text x="${width / 2}" y="214" text-anchor="middle"
+      <!-- Name -->
+      <text x="${width / 2}" y="${nameY}" text-anchor="middle"
         font-size="22" font-weight="700"
         font-family="'Segoe UI',Ubuntu,Sans-Serif"
         fill="${titleColor}">${escapeHTML(social.name)}</text>
-      <text x="${width / 2}" y="233" text-anchor="middle"
+
+      <!-- @username -->
+      <text x="${width / 2}" y="${loginY}" text-anchor="middle"
         font-size="13" font-family="'Segoe UI',Ubuntu,Sans-Serif"
         fill="${textColor}" opacity="0.5">@${escapeHTML(social.login)}</text>
 
-      <!-- ── Bio ── -->
+      <!-- Bio -->
       ${bioSvg}
 
-      <!-- ── Info ── -->
+      <!-- Location / Company / Website -->
       ${infoSvg}
 
-      <!-- ── Section divider ── -->
+      <!-- Section divider -->
       <line x1="24" y1="${dividerY}" x2="${width - 24}" y2="${dividerY}"
         stroke="${textColor}" stroke-opacity="0.1" stroke-width="1"/>
 
-      <!-- ── Stats ── -->
+      <!-- Stats -->
       ${statsSvg}
 
-      <!-- ── Column divider ── -->
-      <line x1="${colDividerX}" y1="${colDividerY1}"
-        x2="${colDividerX}" y2="${colDividerY2}"
+      <!-- Column divider (between left and right cols) -->
+      <line x1="${width / 2}" y1="${colDivTop}" x2="${width / 2}" y2="${colDivBottom}"
         stroke="${textColor}" stroke-opacity="0.07" stroke-width="1"/>
 
-      <!-- ── Bottom divider ── -->
+      <!-- Bottom divider -->
       <line x1="24" y1="${bottomDividerY}" x2="${width - 24}" y2="${bottomDividerY}"
         stroke="${textColor}" stroke-opacity="0.1" stroke-width="1"/>
 
-      <!-- ── Branding ── -->
+      <!-- Branding -->
       <text x="${width / 2}" y="${brandingY}" text-anchor="middle"
         font-size="12" font-family="'Segoe UI',Ubuntu,Sans-Serif"
         fill="${iconColor}" opacity="0.35">readme.stats.guebly.com.br</text>
