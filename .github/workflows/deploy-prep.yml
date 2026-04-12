@@ -1,0 +1,20 @@
+name: Deployment Prep
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  config:
+    if: github.repository == 'Guebly/guebly-readme-stats'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6.0.2
+      - name: Deployment Prep
+        run: python ./.github/workflows/deploy-prep.py
+      - uses: stefanzweifel/git-auto-commit-action@v7.1.0
+        with:
+          branch: vercel
+          create_branch: true
+          push_options: "--force"
