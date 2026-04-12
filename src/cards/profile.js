@@ -128,9 +128,9 @@ export const renderProfileCard = (profile, options = {}) => {
 
   // ── Stats row ────────────────────────────────────────────────────
   const stats = [
-    { value: formatNumber(profile.repos), label: lbl.projects },
-    { value: formatNumber(profile.stars), label: lbl.stars },
-    { value: formatNumber(profile.followers), label: lbl.followers },
+    { value: String(formatNumber(profile.repos)), label: lbl.projects },
+    { value: String(formatNumber(profile.stars)), label: lbl.stars },
+    { value: String(formatNumber(profile.followers)), label: lbl.followers },
     { value: String(sinceYear), label: lbl.since },
   ];
 

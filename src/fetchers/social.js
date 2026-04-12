@@ -1,4 +1,5 @@
 // @ts-check
+import axios from "axios";
 import { graphqlRequest } from "../common/http.js";
 import { withRetry } from "../common/retry.js";
 import { MissingFieldError, AppError } from "../common/error.js";
@@ -54,11 +55,28 @@ export const fetchSocial = async (username) => {
   }
 
   const u = res.data.data.user;
+
+  // Fetch avatar as base64 so the SVG is self-contained (no external URL).
+  // External href in SVG-as-<img> is blocked by Chrome and triggers @error.
+  let avatarDataUri = null;
+  try {
+    const avatarResp = await axios.get(u.avatarUrl, {
+      responseType: "arraybuffer",
+      params: { s: 80 },
+      timeout: 4000,
+    });
+    const ct =
+      /** @type {string} */ (avatarResp.headers["content-type"]) || "image/png";
+    avatarDataUri = `data:${ct.split(";")[0]};base64,${Buffer.from(avatarResp.data).toString("base64")}`;
+  } catch {
+    // falls back to initial-based avatar in renderer
+  }
+
   return {
     name: u.name || u.login,
     login: u.login,
     bio: u.bio || "",
-    avatarUrl: u.avatarUrl,
+    avatarUrl: avatarDataUri,
     location: u.location || "",
     company: u.company || "",
     website: u.websiteUrl || "",

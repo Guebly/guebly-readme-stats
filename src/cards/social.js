@@ -117,16 +117,23 @@ export const renderSocialCard = (social, options = {}) => {
     ((social.name || social.login || "?")[0] || "?").toUpperCase(),
   );
 
+  // Use base64 data URI (fetched server-side) if available; otherwise initial.
+  const avatarInner = social.avatarUrl
+    ? `<clipPath id="avc-${escapeHTML(social.login)}"><circle cx="32" cy="32" r="30"/></clipPath>
+       <image x="2" y="2" width="60" height="60"
+         clip-path="url(#avc-${escapeHTML(social.login)})"
+         href="${social.avatarUrl}"
+         preserveAspectRatio="xMidYMid slice"/>`
+    : `<circle cx="32" cy="32" r="30" fill="${iconColor}" opacity="0.1"/>
+       <text x="32" y="41" text-anchor="middle" font-size="24" font-weight="700"
+         font-family="'Segoe UI',Ubuntu,Sans-Serif" fill="${iconColor}">${avatarInitial}</text>`;
+
   const body = `
-    <!-- Avatar (initial-based — no external image, safe in <img> context) -->
+    <!-- Avatar -->
     <g transform="translate(12, 0)">
-      <circle cx="32" cy="32" r="30" fill="${iconColor}" opacity="0.1" />
       <circle cx="32" cy="32" r="30" stroke="${iconColor}" stroke-width="1.5"
         fill="none" opacity="0.35" />
-      <text x="32" y="41" text-anchor="middle"
-        font-size="24" font-weight="700"
-        font-family="'Segoe UI', Ubuntu, Sans-Serif"
-        fill="${iconColor}">${avatarInitial}</text>
+      ${avatarInner}
     </g>
 
     <!-- Username -->
