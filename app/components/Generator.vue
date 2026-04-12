@@ -102,7 +102,9 @@
                 <button class="toggle" :class="{ active: hideBorder }" @click="hideBorder = !hideBorder" />
               </div>
               <div class="toggle-row" v-if="cardType === 'stats'">
-                <span>Count Private</span>
+                <span>Count Private
+                  <span class="tip" title="Requires: GitHub Settings › Profile › Private contributions = ON, and your token must have read:user scope">(?)</span>
+                </span>
                 <button class="toggle" :class="{ active: countPrivate }" @click="countPrivate = !countPrivate" />
               </div>
               <div class="toggle-row" v-if="cardType === 'stats'">
@@ -150,6 +152,10 @@
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
                 {{ downloading ? 'Gerando...' : 'Download PNG' }}
               </button>
+              <button class="share-btn story" @click="downloadStory" :disabled="downloading">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12" y2="18.01"/></svg>
+                {{ downloading ? 'Gerando...' : 'Story (9:16)' }}
+              </button>
               <button class="share-btn twitter" @click="shareTwitter">
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
                 X / Twitter
@@ -163,7 +169,7 @@
                 WhatsApp
               </button>
             </div>
-            <p class="share-hint mono">Instagram: baixe o PNG e poste direto no app</p>
+            <p class="share-hint mono">Instagram: clique em <strong>Story (9:16)</strong> para baixar no formato ideal para stories</p>
           </div>
         </div>
 
@@ -291,33 +297,21 @@ const downloadPng = async () => {
   if (!generatedUrl.value || downloading.value) return;
   downloading.value = true;
   try {
-    // Fetch SVG as text (same-origin → no CORS issue, no canvas taint)
-    const response = await fetch(generatedUrl.value + "&_dl=1");
-    if (!response.ok) {
-      throw new Error(`HTTP ${response.status}`);
-    }
-    const svgText = await response.text();
-
-    // Create a blob URL so the img.src is "local" — canvas won't be tainted
-    const svgBlob = new Blob([svgText], { type: "image/svg+xml;charset=utf-8" });
-    const blobUrl = URL.createObjectURL(svgBlob);
-
-    const img = new Image();
-    await new Promise((resolve, reject) => {
-      img.onload = resolve;
-      img.onerror = reject;
-      img.src = blobUrl;
-    });
-
+    const img = await fetchSvgBlob(generatedUrl.value + "&_dl=1");
     const scale = 2;
+    const cardW = img.naturalWidth || 495;
+    const cardH = img.naturalHeight || 200;
+    const brandingH = 48; // space for URL branding below card
     const canvas = document.createElement("canvas");
-    canvas.width = (img.naturalWidth || 495) * scale;
-    canvas.height = (img.naturalHeight || 200) * scale;
+    canvas.width = cardW * scale;
+    canvas.height = (cardH + brandingH) * scale;
     const ctx = canvas.getContext("2d");
     ctx.scale(scale, scale);
+    // Dark background strip for branding
+    ctx.fillStyle = "#0D1117";
+    ctx.fillRect(0, 0, cardW, cardH + brandingH);
     ctx.drawImage(img, 0, 0);
-    URL.revokeObjectURL(blobUrl);
-
+    drawBranding(ctx, cardW, cardH + brandingH - 4);
     await new Promise((resolve) => {
       canvas.toBlob((blob) => {
         const a = document.createElement("a");
@@ -333,6 +327,93 @@ const downloadPng = async () => {
   } finally {
     downloading.value = false;
   }
+};
+
+const downloadStory = async () => {
+  if (!generatedUrl.value || downloading.value) return;
+  downloading.value = true;
+  try {
+    const img = await fetchSvgBlob(generatedUrl.value + "&_dl=1");
+    // Instagram Story: 1080×1920 (9:16)
+    const SW = 1080;
+    const SH = 1920;
+    const canvas = document.createElement("canvas");
+    canvas.width = SW;
+    canvas.height = SH;
+    const ctx = canvas.getContext("2d");
+
+    // Dark gradient background
+    const grad = ctx.createLinearGradient(0, 0, SW, SH);
+    grad.addColorStop(0, "#0D1117");
+    grad.addColorStop(0.5, "#160D2B");
+    grad.addColorStop(1, "#0D1117");
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, SW, SH);
+
+    // Subtle purple glow top-left
+    const glow = ctx.createRadialGradient(0, 0, 0, 0, 0, 600);
+    glow.addColorStop(0, "rgba(110,64,201,0.18)");
+    glow.addColorStop(1, "rgba(110,64,201,0)");
+    ctx.fillStyle = glow;
+    ctx.fillRect(0, 0, SW, SH);
+
+    // Scale card to fit story width (90% of SW)
+    const targetW = Math.round(SW * 0.9);
+    const scale = targetW / (img.naturalWidth || 495);
+    const cardW = targetW;
+    const cardH = Math.round((img.naturalHeight || 200) * scale);
+    const cardX = Math.round((SW - cardW) / 2);
+    const cardY = Math.round((SH - cardH) / 2);
+    ctx.drawImage(img, cardX, cardY, cardW, cardH);
+
+    // Site URL branding at bottom
+    ctx.font = "500 32px 'JetBrains Mono', monospace";
+    ctx.fillStyle = "rgba(167,139,250,0.7)";
+    ctx.textAlign = "center";
+    ctx.fillText("readme.stats.guebly.com.br", SW / 2, SH - 80);
+
+    await new Promise((resolve) => {
+      canvas.toBlob((blob) => {
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(blob);
+        a.download = `guebly-story-${(username.value || "card").trim()}.png`;
+        a.click();
+        setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+        resolve();
+      }, "image/png");
+    });
+  } catch {
+    alert("Não foi possível gerar o Story. Tente o Download PNG padrão.");
+  } finally {
+    downloading.value = false;
+  }
+};
+
+// ── Shared SVG fetch helper ────────────────────────────────────────
+const fetchSvgBlob = async (url) => {
+  const resp = await fetch(url);
+  if (!resp.ok) { throw new Error(`HTTP ${resp.status}`); }
+  const svgText = await resp.text();
+  const blob = new Blob([svgText], { type: "image/svg+xml;charset=utf-8" });
+  const blobUrl = URL.createObjectURL(blob);
+  const img = new Image();
+  await new Promise((resolve, reject) => {
+    img.onload = resolve;
+    img.onerror = reject;
+    img.src = blobUrl;
+  });
+  URL.revokeObjectURL(blobUrl);
+  return img;
+};
+
+// ── Draw branding text onto canvas ────────────────────────────────
+const drawBranding = (ctx, canvasW, canvasH, color = "rgba(255,255,255,0.25)") => {
+  ctx.save();
+  ctx.font = "500 22px 'JetBrains Mono', monospace";
+  ctx.fillStyle = color;
+  ctx.textAlign = "center";
+  ctx.fillText("readme.stats.guebly.com.br", canvasW / 2, canvasH - 24);
+  ctx.restore();
 };
 
 const shareText = () =>
@@ -514,6 +595,15 @@ select option { background: var(--surface-2); color: var(--text); }
   border-color: var(--border);
 }
 .share-btn.whatsapp:hover { border-color: #25d366; color: #25d366; }
+.share-btn.story {
+  background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045);
+  color: #fff; border-color: transparent;
+}
+.share-btn.story:hover:not(:disabled) { filter: brightness(1.12); }
+.tip {
+  font-size: 10px; color: var(--accent); cursor: help;
+  margin-left: 4px; opacity: 0.7;
+}
 .share-hint {
   margin-top: 10px; font-size: 11px; color: var(--text-muted);
   line-height: 1.5;

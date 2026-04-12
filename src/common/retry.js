@@ -5,11 +5,20 @@ import { logger } from "./log.js";
 
 // Script variables.
 
-// Count the number of GitHub API tokens available.
-const PAT_COUNT = Object.keys(process.env).filter((key) =>
-  /PAT_\d*$/.exec(key),
-).length;
+// Count available tokens — accepts PAT_N (preferred) and GH_TOKEN_N (legacy).
+const TOKEN_KEYS = Object.keys(process.env).filter(
+  (key) => /PAT_\d+$/.exec(key) || /GH_TOKEN_\d+$/.exec(key),
+);
+const PAT_COUNT = TOKEN_KEYS.length;
 const RETRIES = process.env.NODE_ENV === "test" ? 7 : PAT_COUNT;
+
+/**
+ * Returns token N (1-based), checking PAT_N first, then GH_TOKEN_N.
+ *
+ * @param {number} n Token index (1-based).
+ * @returns {string|undefined} The token value, or undefined if not set.
+ */
+const getToken = (n) => process.env[`PAT_${n}`] || process.env[`GH_TOKEN_${n}`];
 
 /**
  * @typedef {import("axios").AxiosResponse} AxiosResponse Axios response.
@@ -41,7 +50,7 @@ const withRetry = async (fetcher, variables, retries = 0) => {
     let response = await fetcher(
       variables,
       // @ts-ignore
-      process.env[`PAT_${retries + 1}`],
+      getToken(retries + 1),
       // used in tests for faking rate limit
       retries,
     );
@@ -56,7 +65,7 @@ const withRetry = async (fetcher, variables, retries = 0) => {
     // if rate limit is hit increase the RETRIES and recursively call the withRetry
     // with username, and current RETRIES
     if (isRateLimited) {
-      logger.log(`PAT_${retries + 1} Failed`);
+      logger.log(`Token #${retries + 1} Failed`);
       retries++;
       // directly return from the function
       return withRetry(fetcher, variables, retries);
@@ -81,7 +90,7 @@ const withRetry = async (fetcher, variables, retries = 0) => {
       e?.response?.data?.message === "Sorry. Your account was suspended.";
 
     if (isBadCredential || isAccountSuspended) {
-      logger.log(`PAT_${retries + 1} Failed`);
+      logger.log(`Token #${retries + 1} Failed`);
       retries++;
       // directly return from the function
       return withRetry(fetcher, variables, retries);

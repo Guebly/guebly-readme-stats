@@ -39,7 +39,9 @@ const uptimeFetcher = (variables, token) => {
 };
 
 const getAllTokens = () => {
-  return Object.keys(process.env).filter((key) => /PAT_\d*$/.exec(key));
+  return Object.keys(process.env).filter(
+    (key) => /PAT_\d+$/.exec(key) || /GH_TOKEN_\d+$/.exec(key),
+  );
 };
 
 /**
