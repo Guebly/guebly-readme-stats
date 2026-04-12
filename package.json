@@ -1,0 +1,77 @@
+{
+  "name": "guebly-readme-stats",
+  "version": "1.0.0",
+  "description": "Generate dynamic, customizable GitHub stats cards for your README — by Guebly",
+  "keywords": [
+    "guebly",
+    "github-readme-stats",
+    "readme-stats",
+    "cards",
+    "card-generator"
+  ],
+  "main": "src/index.js",
+  "type": "module",
+  "homepage": "https://readme.stats.guebly.com.br",
+  "bugs": {
+    "url": "https://github.com/Guebly/guebly-readme-stats/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Guebly/guebly-readme-stats.git"
+  },
+  "scripts": {
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --coverage",
+    "test:watch": "node --experimental-vm-modules node_modules/jest/bin/jest.js --watch",
+    "test:update:snapshot": "node --experimental-vm-modules node_modules/jest/bin/jest.js -u",
+    "theme-readme-gen": "node scripts/generate-theme-doc",
+    "generate-langs-json": "node scripts/generate-langs-json",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "prepare": "husky",
+    "lint": "npx eslint --max-warnings 0 \"./src/**/*.js\" \"./scripts/**/*.js\" \"./tests/**/*.js\" \"./api/**/*.js\" \"./themes/**/*.js\"",
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "author": "Guebly (github.com/degabrielofi)",
+  "license": "MIT",
+  "devDependencies": {
+    "@eslint/eslintrc": "^3.3.3",
+    "@eslint/js": "^10.0.1",
+    "@testing-library/dom": "^10.4.1",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@uppercod/css-to-object": "^1.1.1",
+    "axios-mock-adapter": "^2.1.0",
+    "color-contrast-checker": "^2.1.0",
+    "eslint": "^10.2.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-jsdoc": "^62.9.0",
+    "express": "^5.2.1",
+    "globals": "^17.4.0",
+    "hjson": "^3.2.2",
+    "husky": "^9.1.7",
+    "jest": "^30.2.0",
+    "jest-environment-jsdom": "^30.2.0",
+    "js-yaml": "^4.1.1",
+    "lint-staged": "^16.2.7",
+    "lodash.snakecase": "^4.1.1",
+    "parse-diff": "^0.11.1",
+    "prettier": "^3.7.3",
+    "vite": "^8.0.8",
+    "@vitejs/plugin-vue": "^6.0.5"
+  },
+  "dependencies": {
+    "axios": "^1.13.1",
+    "dotenv": "^17.2.3",
+    "emoji-name-map": "^2.0.3",
+    "github-username-regex": "^1.0.0",
+    "vue": "^3.5.13",
+    "word-wrap": "^1.2.5"
+  },
+  "lint-staged": {
+    "*.{js,css,md}": "prettier --write"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

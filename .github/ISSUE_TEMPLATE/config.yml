@@ -1,0 +1,11 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Question / Dúvida
+    url: https://github.com/Guebly/guebly-readme-stats/discussions
+    about: Pergunte e responda dúvidas aqui.
+  - name: Error Codes
+    url: https://github.com/Guebly/guebly-readme-stats/issues
+    about: Verifique os erros conhecidos antes de abrir um bug report.
+  - name: FAQ
+    url: https://github.com/Guebly/guebly-readme-stats/discussions
+    about: Consulte o FAQ antes de perguntar.

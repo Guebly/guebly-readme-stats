@@ -1,0 +1,53 @@
+name: Bug report
+description: Create a report to help us improve.
+labels:
+  - "bug"
+body:
+  - type: markdown
+    attributes:
+      value: |
+        :warning: Antes de abrir um bug report, verifique as [issues abertas](https://github.com/Guebly/guebly-readme-stats/issues) e a [documentação](https://github.com/Guebly/guebly-readme-stats#readme).
+  - type: textarea
+    attributes:
+      label: Describe the bug
+      description: A clear and concise description of what the bug is.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Expected behavior
+      description: A clear and concise description of what you expected to happen.
+  - type: textarea
+    attributes:
+      label: Screenshots / Live demo link
+      description: If applicable, add screenshots to help explain your problem.
+      placeholder: Paste the guebly-readme-stats card link as markdown image
+  - type: textarea
+    attributes:
+      label: Additional context
+      description: Add any other context about the problem here.
+  - type: markdown
+    attributes:
+      value: |
+        ---
+        ### FAQ
+
+        #### Q: My card displays an error
+
+        **Ans:** Check the [issues](https://github.com/Guebly/guebly-readme-stats/issues) and existing reports before opening a new one.
+
+        #### Q: How to hide a language?
+
+        **Ans:** `&hide=jupyter%20notebook` (URL-encode the language name).
+
+        #### Q: How to deploy on my own Vercel instance?
+
+        **Ans:** See the [Deploy Your Own](https://github.com/Guebly/guebly-readme-stats#rode-a-sua-própria-instância) section in the README.
+
+        #### Q: Language card stats seem incorrect
+
+        **Ans:** GitHub GraphQL only returns the top languages from your most recent repositories. Some languages may be underrepresented.
+
+        #### Q: How to count private stats?
+
+        **Ans:** We can only count private commits. Deploy on your own instance and use your own PAT with `read:user` scope.
