@@ -215,9 +215,9 @@ export const renderProfileCard = (profile, options = {}) => {
     .map(
       (s, i) => `
       <g transform="translate(${24 + i * colW + colW / 2}, 0)">
-        <svg x="-5" y="1" width="10" height="10" viewBox="0 0 16 16">
+        <g transform="translate(-5, 1) scale(0.625)">
           <path d="${s.icon}" fill="${iconColor}" opacity="0.65"/>
-        </svg>
+        </g>
         <text text-anchor="middle" y="23"
           font-size="17" font-weight="800"
           font-family="'Segoe UI', Ubuntu, Sans-Serif"
