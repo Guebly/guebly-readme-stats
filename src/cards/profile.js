@@ -215,7 +215,7 @@ export const renderProfileCard = (profile, options = {}) => {
     .map(
       (s, i) => `
       <g transform="translate(${24 + i * colW + colW / 2}, 0)">
-        <g transform="translate(-4, 1) scale(0.5)">
+        <g transform="translate(-5, 0) scale(0.625)">
           <path d="${s.icon}" fill="${iconColor}" opacity="0.65"/>
         </g>
         <text text-anchor="middle" y="27"

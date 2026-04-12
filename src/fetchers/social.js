@@ -19,6 +19,9 @@ const GRAPHQL_SOCIAL_QUERY = `
       following { totalCount }
       repositories(ownerAffiliations: OWNER) { totalCount }
       starredRepositories { totalCount }
+      contributionsCollection {
+        contributionCalendar { totalContributions }
+      }
     }
   }
 `;
@@ -84,5 +87,7 @@ export const fetchSocial = async (username) => {
     following: u.following.totalCount,
     repos: u.repositories.totalCount,
     stars: u.starredRepositories.totalCount,
+    contributions:
+      u.contributionsCollection.contributionCalendar.totalContributions,
   };
 };
