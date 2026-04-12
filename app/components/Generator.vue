@@ -283,8 +283,17 @@ const copyCode = async () => {
 };
 
 // ── Image handlers ─────────────────────
-const onImgError = () => {
-  previewError.value = `Could not load card. URL: ${generatedUrl.value}`;
+const onImgError = async () => {
+  let detail = "";
+  try {
+    const r = await fetch(generatedUrl.value);
+    const ct = r.headers.get("content-type") || "";
+    const body = await r.text();
+    detail = ` HTTP ${r.status} [${ct}] — ${body.slice(0, 120)}`;
+  } catch (e) {
+    detail = ` — network error: ${e.message}`;
+  }
+  previewError.value = `Erro:${detail}`;
 };
 const onImgLoad = () => {
   previewError.value = "";
