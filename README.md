@@ -154,7 +154,7 @@ Format: `angle,color1,color2[,color3...]`
 | `hide_rank` | boolean | `false` | Hide the rank circle |
 | `show` | string | — | Extra stats: `prs_merged`, `prs_merged_percentage`, `discussions_started`, `discussions_answered` |
 | `include_all_commits` | boolean | `false` | Count all-time commits |
-| `count_private` | boolean | `false` | Include private contributions |
+| `count_private` | boolean | `false` | Count commits from private repos (requires GitHub Settings › Profile › "Private contributions" = ON) |
 | `custom_title` | string | — | Override card title |
 | `hide_title` | boolean | `false` | Hide card title |
 | `hide_border` | boolean | `false` | Hide card border |

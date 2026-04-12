@@ -48,6 +48,7 @@ export default async (req, res) => {
     border_color,
     rank_icon,
     show,
+    count_private,
   } = req.query;
   res.setHeader("Content-Type", "image/svg+xml");
 
@@ -94,6 +95,7 @@ export default async (req, res) => {
       showStats.includes("discussions_started"),
       showStats.includes("discussions_answered"),
       parseInt(commits_year, 10),
+      toBool(count_private),
     );
     const cacheSeconds = cacheTTL({
       requested: parseInt(cache_seconds, 10),

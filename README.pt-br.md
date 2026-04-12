@@ -159,7 +159,7 @@ Use o formato `ângulo,cor1,cor2[,cor3...]`:
 | `hide_rank` | boolean | `false` | Oculta o círculo de rank |
 | `show` | string | — | Stats extras: `prs_merged`, `prs_merged_percentage`, `discussions_started`, `discussions_answered` |
 | `include_all_commits` | boolean | `false` | Conta commits de todos os anos |
-| `count_private` | boolean | `false` | Inclui contribuições privadas |
+| `count_private` | boolean | `false` | Conta commits em repos privados (requer GitHub Settings › Profile › "Private contributions" = ON) |
 | `custom_title` | string | — | Título customizado |
 | `hide_title` | boolean | `false` | Oculta o título |
 | `hide_border` | boolean | `false` | Oculta a borda |

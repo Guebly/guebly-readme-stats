@@ -102,8 +102,8 @@
                 <button class="toggle" :class="{ active: hideBorder }" @click="hideBorder = !hideBorder" />
               </div>
               <div class="toggle-row" v-if="cardType === 'stats'">
-                <span>Count Private
-                  <span class="tip" title="Requires: GitHub Settings › Profile › Private contributions = ON, and your token must have read:user scope">(?)</span>
+                <span>Incluir Privados
+                  <span class="tip" title="Conta commits em repos privados. Requer: GitHub › Settings › Profile › Private contributions = ON">(?)</span>
                 </span>
                 <button class="toggle" :class="{ active: countPrivate }" @click="countPrivate = !countPrivate" />
               </div>
@@ -196,7 +196,7 @@ const langsLayout = ref("compact");
 const wakaDisplayFormat = ref("");
 const showIcons = ref(true);
 const hideBorder = ref(true);
-const countPrivate = ref(true);
+const countPrivate = ref(false);
 const hideRank = ref(false);
 const codeTab = ref("md");
 const copied = ref(false);

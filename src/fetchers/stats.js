@@ -39,11 +39,11 @@ const REPOS_QUERY = `
 `;
 
 const STATS_QUERY = `
-  query userInfo($login: String!, $after: String, $includeMergedPullRequests: Boolean!, $includeDiscussions: Boolean!, $includeDiscussionsAnswers: Boolean!, $startTime: DateTime = null) {
+  query userInfo($login: String!, $after: String, $includeMergedPullRequests: Boolean!, $includeDiscussions: Boolean!, $includeDiscussionsAnswers: Boolean!, $startTime: DateTime = null, $includePrivateContributions: Boolean = false) {
     user(login: $login) {
       name
       login
-      commits: contributionsCollection (from: $startTime) {
+      commits: contributionsCollection (from: $startTime, includePrivateContributions: $includePrivateContributions) {
         totalCommitContributions,
       }
       reviews: contributionsCollection {
@@ -117,6 +117,7 @@ const statsFetch = async ({
   includeDiscussions,
   includeDiscussionsAnswers,
   startTime,
+  includePrivateContributions = false,
 }) => {
   let stats;
   let hasNextPage = true;
@@ -130,6 +131,7 @@ const statsFetch = async ({
       includeDiscussions,
       includeDiscussionsAnswers,
       startTime,
+      includePrivateContributions,
     };
     let res = await withRetry(fetcher, variables);
     if (res.data.errors) {
@@ -222,6 +224,7 @@ const totalCommitsFetcher = async (username) => {
  * @param {boolean} include_discussions Include discussions.
  * @param {boolean} include_discussions_answers Include discussions answers.
  * @param {number|undefined} commits_year Year to count total commits
+ * @param {boolean} count_private Include private contributions in commit count.
  * @returns {Promise<import("./types").StatsData>} Stats data.
  */
 const getUserStats = async (
@@ -232,6 +235,7 @@ const getUserStats = async (
   include_discussions = false,
   include_discussions_answers = false,
   commits_year,
+  count_private = false,
 ) => {
   if (!username) {
     throw new MissingFieldError(["username"]);
@@ -258,6 +262,7 @@ const getUserStats = async (
     includeDiscussions: include_discussions,
     includeDiscussionsAnswers: include_discussions_answers,
     startTime: commits_year ? `${commits_year}-01-01T00:00:00Z` : undefined,
+    includePrivateContributions: count_private,
   });
 
   // Catch GraphQL errors.
