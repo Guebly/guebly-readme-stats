@@ -173,7 +173,7 @@
 </template>
 
 <script setup>
-import { ref, computed, watch, shallowRef } from "vue";
+import { ref, computed, watch, shallowRef, onMounted, onUnmounted } from "vue";
 
 const props = defineProps({ isDark: Boolean });
 
@@ -185,6 +185,12 @@ const username = ref("");
 const repoName = ref("");
 const gistId = ref("");
 const theme = ref("guebly");
+
+// Listen for theme selections from the ThemesGallery component
+const onThemeSelect = (e) => { theme.value = e.detail; };
+onMounted(() => window.addEventListener("guebly-theme-select", onThemeSelect));
+onUnmounted(() => window.removeEventListener("guebly-theme-select", onThemeSelect));
+
 const locale = ref("");
 const langsLayout = ref("compact");
 const wakaDisplayFormat = ref("");
