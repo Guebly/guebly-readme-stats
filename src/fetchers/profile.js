@@ -1,4 +1,5 @@
 // @ts-check
+import axios from "axios";
 import { graphqlRequest } from "../common/http.js";
 import { withRetry } from "../common/retry.js";
 import { MissingFieldError, AppError } from "../common/error.js";
@@ -13,6 +14,7 @@ const PROFILE_QUERY = `
       company
       location
       createdAt
+      avatarUrl
       followers { totalCount }
       following  { totalCount }
       contributionsCollection {
@@ -67,6 +69,21 @@ export const fetchProfile = async (username) => {
   const user = res.data.data.user;
   const repos = user.repositories;
 
+  // Fetch avatar as base64 so SVG is self-contained (no cross-origin block).
+  let avatarDataUri = null;
+  try {
+    const avatarResp = await axios.get(user.avatarUrl, {
+      responseType: "arraybuffer",
+      params: { s: 80 },
+      timeout: 4000,
+    });
+    const ct =
+      /** @type {string} */ (avatarResp.headers["content-type"]) || "image/png";
+    avatarDataUri = `data:${ct.split(";")[0]};base64,${Buffer.from(avatarResp.data).toString("base64")}`;
+  } catch {
+    // falls back to initial-based avatar in renderer
+  }
+
   const totalStars = repos.nodes.reduce(
     (sum, r) => sum + (r.stargazerCount || 0),
     0,
@@ -91,6 +108,7 @@ export const fetchProfile = async (username) => {
     name: user.name || user.login,
     login: user.login,
     bio: user.bio || "",
+    avatarUrl: avatarDataUri,
     company: (user.company || "").replace(/^@/, ""),
     location: user.location || "",
     createdAt: user.createdAt,
