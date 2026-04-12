@@ -140,11 +140,11 @@ export const renderProfileCard = (profile, options = {}) => {
     .map(
       (s, i) => `
       <g transform="translate(${24 + i * colW + colW / 2}, 0)">
-        <text text-anchor="middle" y="0"
-          font-size="21" font-weight="800"
+        <text text-anchor="middle" y="18"
+          font-size="20" font-weight="800"
           font-family="'Segoe UI', Ubuntu, Sans-Serif"
           fill="${titleColor}">${escapeHTML(s.value)}</text>
-        <text text-anchor="middle" y="19"
+        <text text-anchor="middle" y="34"
           font-size="10" font-family="'Segoe UI', Ubuntu, Sans-Serif"
           fill="${textColor}" opacity="0.5">${escapeHTML(s.label)}</text>
       </g>`,
@@ -170,10 +170,10 @@ export const renderProfileCard = (profile, options = {}) => {
     .join("");
 
   // ── Dimensions ───────────────────────────────────────────────────
-  const height = hasLangs ? 248 : 198;
-  const statsY = 126; // values baseline
-  const langDividerY = 182;
-  const langsY = 208; // center of lang row
+  const height = hasLangs ? 256 : 200;
+  const statsY = 116; // stats group top (values baseline at statsY+18)
+  const langDividerY = 186;
+  const langsY = 212; // lang row y
 
   // ── Clock icon path (SVG, replaces emoji) ────────────────────────
   const clockPath =
@@ -243,7 +243,7 @@ export const renderProfileCard = (profile, options = {}) => {
       ${[1, 2, 3]
         .map(
           (i) => `
-      <line x1="${24 + i * colW}" y1="112" x2="${24 + i * colW}" y2="160"
+      <line x1="${24 + i * colW}" y1="112" x2="${24 + i * colW}" y2="168"
         stroke="${textColor}" stroke-opacity="0.07" stroke-width="1" />`,
         )
         .join("")}

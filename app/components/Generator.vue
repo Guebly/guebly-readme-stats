@@ -284,7 +284,7 @@ const copyCode = async () => {
 
 // ── Image handlers ─────────────────────
 const onImgError = () => {
-  previewError.value = "Could not load card — check the username and try again.";
+  previewError.value = `Could not load card. URL: ${generatedUrl.value}`;
 };
 const onImgLoad = () => {
   previewError.value = "";
@@ -389,11 +389,32 @@ const downloadStory = async () => {
   }
 };
 
+// ── Inline SVG <style> rules as style="" attributes ──────────────
+// Canvas ignores CSS class-based fills — must be inline for toBlob() to work.
+const inlineSvgStyles = (svgText) => {
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(svgText, "image/svg+xml");
+  const styleEl = doc.querySelector("style");
+  if (!styleEl) return svgText;
+  const cssText = styleEl.textContent || "";
+  const ruleRegex = /\.([^{,\s]+)\s*\{([^}]+)\}/g;
+  let match;
+  while ((match = ruleRegex.exec(cssText)) !== null) {
+    const [, className, declarations] = match;
+    doc.querySelectorAll(`.${className}`).forEach((el) => {
+      const existing = el.getAttribute("style") || "";
+      el.setAttribute("style", (existing ? existing + ";" : "") + declarations.trim());
+    });
+  }
+  return new XMLSerializer().serializeToString(doc);
+};
+
 // ── Shared SVG fetch helper ────────────────────────────────────────
 const fetchSvgBlob = async (url) => {
   const resp = await fetch(url);
   if (!resp.ok) { throw new Error(`HTTP ${resp.status}`); }
-  const svgText = await resp.text();
+  let svgText = await resp.text();
+  svgText = inlineSvgStyles(svgText);
   const blob = new Blob([svgText], { type: "image/svg+xml;charset=utf-8" });
   const blobUrl = URL.createObjectURL(blob);
   const img = new Image();
@@ -596,10 +617,12 @@ select option { background: var(--surface-2); color: var(--text); }
 }
 .share-btn.whatsapp:hover { border-color: #25d366; color: #25d366; }
 .share-btn.story {
-  background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045);
-  color: #fff; border-color: transparent;
+  background: var(--surface-2); color: var(--accent-light);
+  border-color: var(--accent);
 }
-.share-btn.story:hover:not(:disabled) { filter: brightness(1.12); }
+.share-btn.story:hover:not(:disabled) {
+  background: var(--accent-subtle); border-color: var(--accent-light);
+}
 .tip {
   font-size: 10px; color: var(--accent); cursor: help;
   margin-left: 4px; opacity: 0.7;
