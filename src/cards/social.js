@@ -113,19 +113,20 @@ export const renderSocialCard = (social, options = {}) => {
     )
     .join("");
 
+  const avatarInitial = escapeHTML(
+    ((social.name || social.login || "?")[0] || "?").toUpperCase(),
+  );
+
   const body = `
-    <!-- Avatar -->
+    <!-- Avatar (initial-based — no external image, safe in <img> context) -->
     <g transform="translate(12, 0)">
-      <clipPath id="avatar-clip-${escapeHTML(social.login)}">
-        <circle cx="32" cy="32" r="30" />
-      </clipPath>
-      <circle class="avatar-ring" cx="32" cy="32" r="31" />
-      <image
-        x="2" y="2" width="60" height="60"
-        clip-path="url(#avatar-clip-${escapeHTML(social.login)})"
-        href="${social.avatarUrl}&s=120"
-        preserveAspectRatio="xMidYMid slice"
-      />
+      <circle cx="32" cy="32" r="30" fill="${iconColor}" opacity="0.1" />
+      <circle cx="32" cy="32" r="30" stroke="${iconColor}" stroke-width="1.5"
+        fill="none" opacity="0.35" />
+      <text x="32" y="41" text-anchor="middle"
+        font-size="24" font-weight="700"
+        font-family="'Segoe UI', Ubuntu, Sans-Serif"
+        fill="${iconColor}">${avatarInitial}</text>
     </g>
 
     <!-- Username -->

@@ -126,8 +126,8 @@
             <div v-else-if="previewError" class="preview-placeholder mono preview-error">
               {{ previewError }}
             </div>
-            <img v-else :src="generatedUrl" alt="Card Preview" class="preview-img"
-              @error="onImgError" @load="onImgLoad" :key="generatedUrl" />
+            <img v-else :src="previewUrl" alt="Card Preview" class="preview-img"
+              @error="onImgError" @load="onImgLoad" :key="previewUrl" />
           </div>
 
           <div class="code-block">
@@ -179,7 +179,7 @@
 </template>
 
 <script setup>
-import { ref, computed, watch } from "vue";
+import { ref, computed, watch, shallowRef } from "vue";
 
 const props = defineProps({ isDark: Boolean });
 
@@ -265,6 +265,15 @@ const generatedUrl = computed(() => {
 
 const enc = (v) => encodeURIComponent(v.trim());
 
+// ── Preview URL (cache-busted so CDN never serves stale layout) ────
+// generatedUrl stays clean for copy-paste; previewUrl adds a per-session
+// revision token that changes whenever the config changes.
+const previewRev = shallowRef(0);
+const previewUrl = computed(() =>
+  generatedUrl.value ? generatedUrl.value + "&_v=" + previewRev.value : "",
+);
+watch(generatedUrl, () => { previewRev.value = Date.now(); }, { immediate: true });
+
 // ── Code output ────────────────────────
 const codeOutput = computed(() => {
   if (!generatedUrl.value) return "";
@@ -286,7 +295,7 @@ const copyCode = async () => {
 const onImgError = async () => {
   let detail = "";
   try {
-    const r = await fetch(generatedUrl.value);
+    const r = await fetch(previewUrl.value);
     const ct = r.headers.get("content-type") || "";
     const body = await r.text();
     detail = ` HTTP ${r.status} [${ct}] — ${body.slice(0, 120)}`;

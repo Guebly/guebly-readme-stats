@@ -243,7 +243,7 @@ export const renderProfileCard = (profile, options = {}) => {
       ${[1, 2, 3]
         .map(
           (i) => `
-      <line x1="${24 + i * colW}" y1="112" x2="${24 + i * colW}" y2="168"
+      <line x1="${24 + i * colW}" y1="104" x2="${24 + i * colW}" y2="170"
         stroke="${textColor}" stroke-opacity="0.07" stroke-width="1" />`,
         )
         .join("")}
