@@ -3,88 +3,92 @@ import { resolveColors } from "../common/color.js";
 import { formatNumber } from "../common/fmt.js";
 import { escapeHTML } from "../common/html.js";
 
-/** @type {Record<string, {projects:string,stars:string,followers:string,since:string,coding:string}>} */
+/** @type {Record<string, {repos:string,stars:string,followers:string,since:string,contributions:string}>} */
 const LABELS = {
   en: {
-    projects: "Projects",
+    repos: "Repos",
     stars: "Stars",
     followers: "Followers",
     since: "Since",
-    coding: "Coding since",
+    contributions: "Contributions",
   },
   "pt-br": {
-    projects: "Projetos",
+    repos: "Projetos",
     stars: "Estrelas",
     followers: "Seguidores",
     since: "Desde",
-    coding: "Criando desde",
+    contributions: "Contribuições",
   },
   es: {
-    projects: "Proyectos",
+    repos: "Proyectos",
     stars: "Estrellas",
     followers: "Seguidores",
     since: "Desde",
-    coding: "Creando desde",
+    contributions: "Contribuciones",
   },
   de: {
-    projects: "Projekte",
+    repos: "Projekte",
     stars: "Sterne",
     followers: "Follower",
     since: "Seit",
-    coding: "Coder seit",
+    contributions: "Beiträge",
   },
   fr: {
-    projects: "Projets",
+    repos: "Projets",
     stars: "Étoiles",
     followers: "Abonnés",
     since: "Depuis",
-    coding: "Code depuis",
+    contributions: "Contributions",
   },
   it: {
-    projects: "Progetti",
+    repos: "Progetti",
     stars: "Stelle",
     followers: "Seguaci",
     since: "Dal",
-    coding: "Sviluppa dal",
+    contributions: "Contributi",
   },
   ja: {
-    projects: "プロジェクト",
+    repos: "リポジトリ",
     stars: "スター",
     followers: "フォロワー",
     since: "開始",
-    coding: "開始年",
+    contributions: "コントリビュート",
   },
   "zh-cn": {
-    projects: "项目",
+    repos: "仓库",
     stars: "星标",
     followers: "关注者",
     since: "起始",
-    coding: "编程自",
+    contributions: "贡献",
   },
   ko: {
-    projects: "프로젝트",
+    repos: "저장소",
     stars: "스타",
     followers: "팔로워",
     since: "시작",
-    coding: "시작 연도",
+    contributions: "기여",
   },
   ru: {
-    projects: "Проекты",
+    repos: "Проекты",
     stars: "Звёзды",
     followers: "Подписчики",
     since: "С",
-    coding: "Кодит с",
+    contributions: "Вклады",
   },
   ar: {
-    projects: "مشاريع",
+    repos: "مشاريع",
     stars: "نجوم",
     followers: "متابعون",
     since: "منذ",
-    coding: "يطور منذ",
+    contributions: "إسهامات",
   },
 };
 
 const getLabels = (locale) => LABELS[locale] || LABELS.en;
+
+// Truncate string to maxLen chars, appending "…" if cut.
+const trunc = (str, maxLen) =>
+  str.length > maxLen ? str.slice(0, maxLen - 1) + "…" : str;
 
 /**
  * @param {object} profile Profile highlight data.
@@ -126,36 +130,83 @@ export const renderProfileCard = (profile, options = {}) => {
     ((profile.name || profile.login || "?")[0] || "?").toUpperCase(),
   );
 
-  // ── Stats row ────────────────────────────────────────────────────
+  // ── Header rows (bio + info) ──────────────────────────────────────
+  const hasBio = Boolean(profile.bio);
+  const hasLocation = Boolean(profile.location);
+  const hasCompany = Boolean(profile.company);
+
+  const bioSvg = hasBio
+    ? `<text x="100" y="62" font-size="11"
+        font-family="'Segoe UI', Ubuntu, Sans-Serif"
+        fill="${textColor}" opacity="0.6"
+        font-style="italic">${escapeHTML(trunc(profile.bio, 62))}</text>`
+    : "";
+
+  // Info row: location + company on the same line, separated by a gap
+  const pinPath =
+    "M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z";
+  const buildingPath =
+    "M14.763.075A.5.5 0 0 1 15 .5v15a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5V14h-1v1.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V10a.5.5 0 0 1 .342-.474L6 7.64V4.5a.5.5 0 0 1 .276-.447l8-4a.5.5 0 0 1 .487.022z";
+
+  const infoY = hasBio ? 78 : 64;
+  let infoSvg = "";
+  let infoX = 100;
+
+  if (hasLocation) {
+    infoSvg += `
+      <svg x="${infoX}" y="${infoY - 10}" width="11" height="11" viewBox="0 0 16 16">
+        <path d="${pinPath}" fill="${textColor}" opacity="0.4"/>
+      </svg>
+      <text x="${infoX + 15}" y="${infoY}" font-size="11"
+        font-family="'Segoe UI', Ubuntu, Sans-Serif"
+        fill="${textColor}" opacity="0.5">${escapeHTML(trunc(profile.location, 22))}</text>`;
+    infoX += 15 + Math.min(profile.location.length, 22) * 6.4 + 16;
+  }
+
+  if (hasCompany) {
+    infoSvg += `
+      <svg x="${infoX}" y="${infoY - 10}" width="11" height="11" viewBox="0 0 16 16">
+        <path d="${buildingPath}" fill="${textColor}" opacity="0.4"/>
+      </svg>
+      <text x="${infoX + 15}" y="${infoY}" font-size="11"
+        font-family="'Segoe UI', Ubuntu, Sans-Serif"
+        fill="${textColor}" opacity="0.5">${escapeHTML(trunc(profile.company, 20))}</text>`;
+  }
+
+  // ── Stats (5 columns) ─────────────────────────────────────────────
   const stats = [
-    { value: String(formatNumber(profile.repos)), label: lbl.projects },
+    { value: String(formatNumber(profile.repos)), label: lbl.repos },
     { value: String(formatNumber(profile.stars)), label: lbl.stars },
+    {
+      value: String(formatNumber(profile.contributions)),
+      label: lbl.contributions,
+    },
     { value: String(formatNumber(profile.followers)), label: lbl.followers },
     { value: String(sinceYear), label: lbl.since },
   ];
 
-  const colW = (width - 48) / 4; // ~111.75px per column
+  const colW = (width - 48) / 5; // ~89.4px per column
 
   const statsSvg = stats
     .map(
       (s, i) => `
       <g transform="translate(${24 + i * colW + colW / 2}, 0)">
-        <text text-anchor="middle" y="18"
-          font-size="20" font-weight="800"
+        <text text-anchor="middle" y="17"
+          font-size="18" font-weight="800"
           font-family="'Segoe UI', Ubuntu, Sans-Serif"
           fill="${titleColor}">${escapeHTML(s.value)}</text>
-        <text text-anchor="middle" y="34"
-          font-size="10" font-family="'Segoe UI', Ubuntu, Sans-Serif"
+        <text text-anchor="middle" y="31"
+          font-size="9.5" font-family="'Segoe UI', Ubuntu, Sans-Serif"
           fill="${textColor}" opacity="0.5">${escapeHTML(s.label)}</text>
       </g>`,
     )
     .join("");
 
-  // ── Languages row ────────────────────────────────────────────────
+  // ── Languages ────────────────────────────────────────────────────
   const hasLangs = profile.topLanguages.length > 0;
   const langSpacing = hasLangs
-    ? Math.min(112, Math.floor((width - 48) / profile.topLanguages.length))
-    : 112;
+    ? Math.min(96, Math.floor((width - 48) / profile.topLanguages.length))
+    : 96;
 
   const langsSvg = profile.topLanguages
     .map(
@@ -170,68 +221,47 @@ export const renderProfileCard = (profile, options = {}) => {
     .join("");
 
   // ── Dimensions ───────────────────────────────────────────────────
-  const height = hasLangs ? 256 : 200;
-  const statsY = 116; // stats group top (values baseline at statsY+18)
-  const langDividerY = 186;
-  const langsY = 212; // lang row y
-
-  // ── Clock icon path (SVG, replaces emoji) ────────────────────────
-  const clockPath =
-    "M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z";
-
-  // ── Location pin path ─────────────────────────────────────────────
-  const pinPath =
-    "M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z";
+  const dividerY = 100;
+  const statsY = 110; // stats group translateY
+  const langDividerY = 172;
+  const langsY = 196;
+  const height = hasLangs ? 230 : 180;
 
   return `
     <svg width="${width}" height="${height}" viewBox="0 0 ${width} ${height}"
       fill="none" xmlns="http://www.w3.org/2000/svg" role="img"
       aria-labelledby="profileTitle">
-      <title id="profileTitle">${escapeHTML(profile.name)}'s GitHub Highlights</title>
+      <title id="profileTitle">${escapeHTML(profile.name)}'s GitHub Profile</title>
 
       <rect x="0.5" y="0.5" rx="4.5" width="${width - 1}" height="${height - 1}"
         fill="${bgFill}" ${borderAttr} />
 
       <!-- ── Avatar circle (initial) ──────────────────────── -->
-      <circle cx="52" cy="54" r="36" fill="${iconColor}" opacity="0.1" />
-      <circle cx="52" cy="54" r="36" stroke="${iconColor}" stroke-width="1.5"
+      <circle cx="52" cy="50" r="32" fill="${iconColor}" opacity="0.1" />
+      <circle cx="52" cy="50" r="32" stroke="${iconColor}" stroke-width="1.5"
         fill="none" opacity="0.3" />
-      <text x="52" y="62" text-anchor="middle"
-        font-size="28" font-weight="700"
+      <text x="52" y="58" text-anchor="middle"
+        font-size="24" font-weight="700"
         font-family="'Segoe UI', Ubuntu, Sans-Serif"
         fill="${iconColor}">${initial}</text>
 
       <!-- ── Identity ──────────────────────────────────────── -->
-      <text x="104" y="34" font-size="17" font-weight="700"
+      <text x="100" y="28" font-size="17" font-weight="700"
         font-family="'Segoe UI', Ubuntu, Sans-Serif"
         fill="${titleColor}">${escapeHTML(profile.name)}</text>
 
-      <text x="104" y="52" font-size="12"
+      <text x="100" y="44" font-size="12"
         font-family="'Segoe UI', Ubuntu, Sans-Serif"
-        fill="${textColor}" opacity="0.55">@${escapeHTML(profile.login)}</text>
+        fill="${textColor}" opacity="0.5">@${escapeHTML(profile.login)}</text>
 
-      <!-- Coding since row -->
-      <svg x="104" y="60" width="12" height="12" viewBox="0 0 16 16">
-        <path d="${clockPath}" fill="${iconColor}" opacity="0.8" />
-      </svg>
-      <text x="120" y="71" font-size="11"
-        font-family="'Segoe UI', Ubuntu, Sans-Serif"
-        fill="${iconColor}" opacity="0.85">${escapeHTML(lbl.coding)} ${sinceYear}</text>
+      <!-- Bio (if set) -->
+      ${bioSvg}
 
-      ${
-        profile.location
-          ? `
-      <svg x="104" y="78" width="12" height="12" viewBox="0 0 16 16">
-        <path d="${pinPath}" fill="${textColor}" opacity="0.4" />
-      </svg>
-      <text x="120" y="89" font-size="10"
-        font-family="'Segoe UI', Ubuntu, Sans-Serif"
-        fill="${textColor}" opacity="0.45">${escapeHTML(profile.location)}</text>`
-          : ""
-      }
+      <!-- Location + Company row -->
+      ${infoSvg}
 
       <!-- ── Stats divider ─────────────────────────────────── -->
-      <line x1="24" y1="104" x2="${width - 24}" y2="104"
+      <line x1="24" y1="${dividerY}" x2="${width - 24}" y2="${dividerY}"
         stroke="${textColor}" stroke-opacity="0.1" stroke-width="1" />
 
       <!-- ── Stats ─────────────────────────────────────────── -->
@@ -240,10 +270,10 @@ export const renderProfileCard = (profile, options = {}) => {
       </g>
 
       <!-- ── Column dividers ───────────────────────────────── -->
-      ${[1, 2, 3]
+      ${[1, 2, 3, 4]
         .map(
           (i) => `
-      <line x1="${24 + i * colW}" y1="104" x2="${24 + i * colW}" y2="170"
+      <line x1="${24 + i * colW}" y1="${dividerY}" x2="${24 + i * colW}" y2="${dividerY + 60}"
         stroke="${textColor}" stroke-opacity="0.07" stroke-width="1" />`,
         )
         .join("")}

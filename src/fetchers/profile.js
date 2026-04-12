@@ -10,9 +10,14 @@ const PROFILE_QUERY = `
       name
       login
       bio
+      company
       location
       createdAt
       followers { totalCount }
+      following  { totalCount }
+      contributionsCollection {
+        contributionCalendar { totalContributions }
+      }
       repositories(
         first: 100
         ownerAffiliations: OWNER
@@ -62,13 +67,11 @@ export const fetchProfile = async (username) => {
   const user = res.data.data.user;
   const repos = user.repositories;
 
-  // Total stars across all own repos
   const totalStars = repos.nodes.reduce(
     (sum, r) => sum + (r.stargazerCount || 0),
     0,
   );
 
-  // Top languages by repo frequency
   const langMap = {};
   for (const repo of repos.nodes) {
     if (repo.primaryLanguage) {
@@ -81,22 +84,22 @@ export const fetchProfile = async (username) => {
   }
   const topLanguages = Object.entries(langMap)
     .sort((a, b) => b[1].count - a[1].count)
-    .slice(0, 4)
+    .slice(0, 5)
     .map(([name, { color }]) => ({ name, color }));
-
-  const codingYears =
-    new Date().getFullYear() - new Date(user.createdAt).getFullYear();
 
   return {
     name: user.name || user.login,
     login: user.login,
     bio: user.bio || "",
+    company: (user.company || "").replace(/^@/, ""),
     location: user.location || "",
     createdAt: user.createdAt,
-    codingYears: Math.max(codingYears, 0),
     followers: user.followers.totalCount,
+    following: user.following.totalCount,
     repos: repos.totalCount,
     stars: totalStars,
+    contributions:
+      user.contributionsCollection.contributionCalendar.totalContributions,
     topLanguages,
   };
 };
