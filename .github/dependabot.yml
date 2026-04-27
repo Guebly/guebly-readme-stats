@@ -1,31 +1,13 @@
-version: 2
-updates:
-  # Maintain dependencies for npm
-  - package-ecosystem: npm
-    directory: "/"
-    schedule:
-      interval: weekly
-    open-pull-requests-limit: 10
-    commit-message:
-      prefix: "build(deps)"
-      prefix-development: "build(deps-dev)"
-
-  # Maintain dependencies for GitHub Actions
-  - package-ecosystem: github-actions
-    directory: "/"
-    schedule:
-      interval: weekly
-    open-pull-requests-limit: 10
-    commit-message:
-      prefix: "ci(deps)"
-      prefix-development: "ci(deps-dev)"
-
-  # Maintain dependencies for Devcontainers
-  - package-ecosystem: devcontainers
-    directory: "/"
-    schedule:
-      interval: weekly
-    open-pull-requests-limit: 10
-    commit-message:
-      prefix: "build(deps)"
-      prefix-development: "build(deps-dev)"
+# Dependabot desativado — dependências são gerenciadas manualmente
+# Para reativar, descomente as seções abaixo
+#
+# version: 2
+# updates:
+#   - package-ecosystem: npm
+#     directory: "/"
+#     schedule:
+#       interval: monthly
+#     open-pull-requests-limit: 3
+#     groups:
+#       all-dependencies:
+#         patterns: ["*"]
