@@ -6,6 +6,7 @@
       <div v-for="ep in endpoints" :key="ep.path" class="endpoint">
         <span class="method mono">GET</span>
         <span class="ep-path mono">{{ ep.path }}</span>
+        <span v-if="ep.isNew" class="ep-new mono">NEW</span>
         <span class="ep-desc">{{ ep.desc }}</span>
       </div>
     </div>
@@ -22,6 +23,11 @@ const endpoints = [
   { path: "/api/pin?username=:user&repo=:repo", desc: "Repo Pin" },
   { path: "/api/gist?id=:gist_id", desc: "Gist Card" },
   { path: "/api/wakatime?username=:user", desc: "WakaTime Stats" },
+  { path: "/api/contributions?username=:user", desc: "Contributions Heatmap", isNew: true },
+  { path: "/api/working-on?username=:user", desc: "Currently Working On", isNew: true },
+  { path: "/api/tech-stack?username=:user", desc: "Tech Stack", isNew: true },
+  { path: "/api/compare?user1=:user1&user2=:user2", desc: "Compare Users", isNew: true },
+  { path: "/api/sponsors?username=:user", desc: "Sponsors / Support", isNew: true },
 ];
 </script>
 
@@ -42,6 +48,11 @@ const endpoints = [
   flex-shrink: 0;
 }
 .ep-path { font-size: 14px; color: var(--text-muted); }
+.ep-new {
+  padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: 700;
+  background: color-mix(in srgb, var(--accent) 15%, transparent);
+  color: var(--accent-light); flex-shrink: 0;
+}
 .ep-desc { font-size: 13px; color: var(--text-muted); margin-left: auto; flex-shrink: 0; }
 
 @media (max-width: 600px) {

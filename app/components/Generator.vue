@@ -13,6 +13,7 @@
               <select v-model="cardType">
                 <optgroup label="✨ Highlights">
                   <option value="profile">Profile Highlight ✨</option>
+                  <option value="full-profile">Full Profile README ✨</option>
                 </optgroup>
                 <optgroup label="Developer Cards">
                   <option value="stats">Stats Card</option>
@@ -24,12 +25,24 @@
                   <option value="gist">Gist Card</option>
                   <option value="wakatime">WakaTime</option>
                 </optgroup>
+                <optgroup label="🆕 New Cards">
+                  <option value="contributions">Contributions Heatmap</option>
+                  <option value="working-on">Currently Working On</option>
+                  <option value="tech-stack">Tech Stack</option>
+                  <option value="compare">Compare Users</option>
+                  <option value="sponsors">Sponsors / Support</option>
+                </optgroup>
               </select>
             </div>
 
             <div class="field" v-if="cardType !== 'gist'">
-              <label class="mono">{{ cardType === 'wakatime' ? 'WakaTime Username' : 'GitHub Username' }}</label>
+              <label class="mono">{{ cardType === 'wakatime' ? 'WakaTime Username' : cardType === 'compare' ? 'User 1' : 'GitHub Username' }}</label>
               <input v-model="username" type="text" :placeholder="cardType === 'wakatime' ? 'your_wakatime_user' : 'degabrielofi'" @input="previewError = ''" />
+            </div>
+
+            <div class="field" v-if="cardType === 'compare'">
+              <label class="mono">User 2</label>
+              <input v-model="compareUser" type="text" placeholder="torvalds" @input="previewError = ''" />
             </div>
 
             <div class="field" v-if="cardType === 'pin'">
@@ -52,6 +65,37 @@
                   <option v-for="t in classicThemeNames" :key="t" :value="t">{{ formatName(t) }}</option>
                 </optgroup>
               </select>
+            </div>
+
+            <div class="field">
+              <label class="mono">
+                Custom Colors
+                <button class="toggle-inline mono" @click="showCustomColors = !showCustomColors">
+                  {{ showCustomColors ? 'Hide' : 'Show' }}
+                </button>
+              </label>
+              <div v-if="showCustomColors" class="custom-colors-grid">
+                <div class="color-field">
+                  <label class="mono">Title</label>
+                  <input v-model="customTitleColor" type="text" placeholder="6E40C9" maxlength="8" />
+                </div>
+                <div class="color-field">
+                  <label class="mono">Text</label>
+                  <input v-model="customTextColor" type="text" placeholder="c9d1d9" maxlength="8" />
+                </div>
+                <div class="color-field">
+                  <label class="mono">Icon</label>
+                  <input v-model="customIconColor" type="text" placeholder="6E40C9" maxlength="8" />
+                </div>
+                <div class="color-field">
+                  <label class="mono">Background</label>
+                  <input v-model="customBgColor" type="text" placeholder="0D1117" maxlength="30" />
+                </div>
+                <div class="color-field">
+                  <label class="mono">Border</label>
+                  <input v-model="customBorderColor" type="text" placeholder="1a1e24" maxlength="8" />
+                </div>
+              </div>
             </div>
 
             <div class="field">
@@ -184,7 +228,14 @@ const cardType = ref("stats");
 const username = ref("");
 const repoName = ref("");
 const gistId = ref("");
+const compareUser = ref("");
 const theme = ref("guebly");
+const showCustomColors = ref(false);
+const customTitleColor = ref("");
+const customTextColor = ref("");
+const customIconColor = ref("");
+const customBgColor = ref("");
+const customBorderColor = ref("");
 
 // Listen for theme selections from the ThemesGallery component
 const onThemeSelect = (e) => { theme.value = e.detail; };
@@ -216,6 +267,15 @@ const classicThemeNames = [
 const formatName = (n) => n.replace(/_/g, " ").replace(/-/g, " ").replace(/\b\w/g, c => c.toUpperCase());
 
 // ── URL builder ────────────────────────
+const appendCustomColors = (params) => {
+  if (customTitleColor.value) params += `&title_color=${enc(customTitleColor.value)}`;
+  if (customTextColor.value) params += `&text_color=${enc(customTextColor.value)}`;
+  if (customIconColor.value) params += `&icon_color=${enc(customIconColor.value)}`;
+  if (customBgColor.value) params += `&bg_color=${enc(customBgColor.value)}`;
+  if (customBorderColor.value) params += `&border_color=${enc(customBorderColor.value)}`;
+  return params;
+};
+
 const generatedUrl = computed(() => {
   const paths = {
     stats: "/api",
@@ -227,14 +287,33 @@ const generatedUrl = computed(() => {
     social: "/api/social",
     trophy: "/api/trophy",
     profile: "/api/profile",
+    contributions: "/api/contributions",
+    "working-on": "/api/working-on",
+    "tech-stack": "/api/tech-stack",
+    compare: "/api/compare",
+    sponsors: "/api/sponsors",
   };
+
+  if (cardType.value === "full-profile") {
+    if (!username.value.trim()) return "";
+    return buildFullProfileMarkdown();
+  }
 
   if (cardType.value === "gist") {
     if (!gistId.value.trim()) return "";
     let params = `id=${enc(gistId.value)}&theme=${theme.value}`;
     if (hideBorder.value) params += "&hide_border=true";
     if (locale.value) params += `&locale=${locale.value}`;
+    params = appendCustomColors(params);
     return `${baseUrl}${paths.gist}?${params}`;
+  }
+
+  if (cardType.value === "compare") {
+    if (!username.value.trim() || !compareUser.value.trim()) return "";
+    let params = `user1=${enc(username.value)}&user2=${enc(compareUser.value)}&theme=${theme.value}`;
+    if (hideBorder.value) params += "&hide_border=true";
+    params = appendCustomColors(params);
+    return `${baseUrl}${paths.compare}?${params}`;
   }
 
   if (!username.value.trim()) return "";
@@ -257,9 +336,25 @@ const generatedUrl = computed(() => {
   }
   if (hideBorder.value) params += "&hide_border=true";
   if (locale.value) params += `&locale=${locale.value}`;
+  params = appendCustomColors(params);
 
   return `${baseUrl}${paths[cardType.value]}?${params}`;
 });
+
+const buildFullProfileMarkdown = () => {
+  const u = enc(username.value);
+  const t = theme.value;
+  const hb = hideBorder.value ? "&hide_border=true" : "";
+  const l = locale.value ? `&locale=${locale.value}` : "";
+  let colors = "";
+  if (customTitleColor.value) colors += `&title_color=${enc(customTitleColor.value)}`;
+  if (customTextColor.value) colors += `&text_color=${enc(customTextColor.value)}`;
+  if (customIconColor.value) colors += `&icon_color=${enc(customIconColor.value)}`;
+  if (customBgColor.value) colors += `&bg_color=${enc(customBgColor.value)}`;
+  if (customBorderColor.value) colors += `&border_color=${enc(customBorderColor.value)}`;
+  const base = baseUrl;
+  return `FULL_PROFILE:${base}:${u}:${t}:${hb}:${l}:${colors}`;
+};
 
 const enc = (v) => encodeURIComponent(v.trim());
 
@@ -275,6 +370,38 @@ watch(generatedUrl, () => { previewRev.value = Date.now(); }, { immediate: true 
 // ── Code output ────────────────────────
 const codeOutput = computed(() => {
   if (!generatedUrl.value) return "";
+
+  if (cardType.value === "full-profile") {
+    const u = enc(username.value);
+    const t = theme.value;
+    const hb = hideBorder.value ? "&hide_border=true" : "";
+    const l = locale.value ? `&locale=${locale.value}` : "";
+    let colors = "";
+    if (customTitleColor.value) colors += `&title_color=${enc(customTitleColor.value)}`;
+    if (customTextColor.value) colors += `&text_color=${enc(customTextColor.value)}`;
+    if (customIconColor.value) colors += `&icon_color=${enc(customIconColor.value)}`;
+    if (customBgColor.value) colors += `&bg_color=${enc(customBgColor.value)}`;
+    if (customBorderColor.value) colors += `&border_color=${enc(customBorderColor.value)}`;
+    const b = baseUrl;
+    const common = `theme=${t}${hb}${l}${colors}`;
+
+    return `<div align="center">
+
+![Stats](${b}/api?username=${u}&${common}&show_icons=true)
+
+![Top Langs](${b}/api/top-langs?username=${u}&${common}&layout=compact&langs_count=8)
+
+![Streak](${b}/api/streak?username=${u}&${common})
+
+![Contributions](${b}/api/contributions?username=${u}&${common})
+
+![Tech Stack](${b}/api/tech-stack?username=${u}&${common})
+
+![Working On](${b}/api/working-on?username=${u}&${common})
+
+</div>`;
+  }
+
   const url = generatedUrl.value;
   if (codeTab.value === "md") return `![GitHub Stats](${url})`;
   if (codeTab.value === "html") return `<img src="${url}" alt="GitHub Stats" />`;
@@ -646,5 +773,27 @@ select option { background: var(--surface-2); color: var(--text); }
 .share-hint {
   margin-top: 10px; font-size: 11px; color: var(--text-muted);
   line-height: 1.5;
+}
+
+/* ── Custom Colors ───────────────── */
+.toggle-inline {
+  float: right; font-size: 10px; padding: 2px 8px;
+  border-radius: 6px; background: var(--surface-2); border: 1px solid var(--border);
+  color: var(--accent-light); cursor: pointer; transition: all .2s;
+}
+.toggle-inline:hover { border-color: var(--accent); }
+.custom-colors-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 8px;
+}
+.color-field label { font-size: 9px; margin-bottom: 3px; text-transform: uppercase; }
+.color-field input {
+  width: 100%; padding: 6px 8px; font-size: 12px;
+  background: var(--surface-2); border: 1px solid var(--border);
+  border-radius: 6px; color: var(--text);
+  font-family: 'JetBrains Mono', monospace;
+}
+.color-field input:focus {
+  border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent-glow);
+  outline: none;
 }
 </style>

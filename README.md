@@ -39,6 +39,11 @@ Just paste a URL into your README, customize with query parameters, and you're d
 | 6 | **Repo Pin** | `/api/pin` | Highlight a specific repository |
 | 7 | **Gist** | `/api/gist` | Display a gist with code highlighting |
 | 8 | **WakaTime** | `/api/wakatime` | Coding time breakdown by language |
+| 9 | **Contributions Heatmap** | `/api/contributions` | GitHub-style contribution calendar heatmap |
+| 10 | **Currently Working On** | `/api/working-on` | Most recently pushed repository with details |
+| 11 | **Tech Stack** | `/api/tech-stack` | Languages grouped by category (Frontend, Backend, etc.) |
+| 12 | **Compare Users** | `/api/compare` | Side-by-side stats comparison of two users |
+| 13 | **Sponsors / Support** | `/api/sponsors` | GitHub Sponsors info and social links |
 
 ---
 
@@ -90,6 +95,40 @@ Replace `YOUR_USERNAME` with your GitHub username.
 ![WakaTime](https://readme.stats.guebly.com.br/api/wakatime?username=YOUR_WAKATIME_USERNAME&theme=guebly&hide_border=true)
 ```
 
+### Contributions Heatmap
+
+```md
+![Contributions](https://readme.stats.guebly.com.br/api/contributions?username=YOUR_USERNAME&theme=guebly&hide_border=true)
+```
+
+### Currently Working On
+
+```md
+![Working On](https://readme.stats.guebly.com.br/api/working-on?username=YOUR_USERNAME&theme=guebly&hide_border=true)
+```
+
+### Tech Stack
+
+```md
+![Tech Stack](https://readme.stats.guebly.com.br/api/tech-stack?username=YOUR_USERNAME&theme=guebly&hide_border=true)
+```
+
+### Compare Users
+
+```md
+![Compare](https://readme.stats.guebly.com.br/api/compare?user1=YOUR_USERNAME&user2=OTHER_USER&theme=guebly&hide_border=true)
+```
+
+### Sponsors Card
+
+```md
+![Sponsors](https://readme.stats.guebly.com.br/api/sponsors?username=YOUR_USERNAME&theme=guebly&hide_border=true)
+```
+
+### Full Profile README
+
+Use the **Full Profile README** option in the [visual generator](https://readme.stats.guebly.com.br) to generate a complete README.md with multiple cards combined — just paste into your profile repository.
+
 ---
 
 ## Themes
@@ -123,13 +162,15 @@ Full theme preview: [themes/README.md](./themes/README.md)
 ![Stats](https://readme.stats.guebly.com.br/api?username=YOUR_USERNAME&theme=guebly_neon)
 ```
 
-### Custom colors
+### Custom colors (via URL)
 
-Override any color individually with hex values (no `#`):
+Override any color individually with hex values (no `#`). Works on all card types:
 
 ```md
 ![Stats](https://readme.stats.guebly.com.br/api?username=YOUR_USERNAME&title_color=6E40C9&text_color=ffffff&icon_color=A78BFA&bg_color=0D1117&border_color=30363D)
 ```
+
+You can also use the **Custom Colors** panel in the visual generator to preview colors in real-time before copying the URL.
 
 ### Gradient background
 
@@ -301,6 +342,96 @@ Format: `angle,color1,color2[,color3...]`
 | `hide_border` | boolean | `false` | Hide border |
 | `border_radius` | number | `4.5` | Border radius |
 | `locale` | string | `en` | Language code |
+| `cache_seconds` | number | `21600` | Cache duration |
+| `title_color` | hex | — | Title color |
+| `text_color` | hex | — | Text color |
+| `icon_color` | hex | — | Icon color |
+| `bg_color` | hex | — | Background |
+| `border_color` | hex | — | Border color |
+
+---
+
+### `/api/contributions` — Contributions Heatmap
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `username` | string | — | **Required.** GitHub username |
+| `theme` | string | `default` | Theme |
+| `hide_border` | boolean | `false` | Hide border |
+| `border_radius` | number | `4.5` | Border radius |
+| `custom_title` | string | — | Override title |
+| `cache_seconds` | number | `21600` | Cache duration |
+| `title_color` | hex | — | Title color |
+| `text_color` | hex | — | Text color |
+| `icon_color` | hex | — | Heatmap color (cell intensity) |
+| `bg_color` | hex | — | Background |
+| `border_color` | hex | — | Border color |
+
+---
+
+### `/api/working-on` — Currently Working On
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `username` | string | — | **Required.** GitHub username |
+| `theme` | string | `default` | Theme |
+| `hide_border` | boolean | `false` | Hide border |
+| `border_radius` | number | `4.5` | Border radius |
+| `custom_title` | string | — | Override title |
+| `cache_seconds` | number | `21600` | Cache duration |
+| `title_color` | hex | — | Title color |
+| `text_color` | hex | — | Text color |
+| `icon_color` | hex | — | Icon color |
+| `bg_color` | hex | — | Background |
+| `border_color` | hex | — | Border color |
+
+---
+
+### `/api/tech-stack` — Tech Stack
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `username` | string | — | **Required.** GitHub username |
+| `theme` | string | `default` | Theme |
+| `hide_border` | boolean | `false` | Hide border |
+| `border_radius` | number | `4.5` | Border radius |
+| `custom_title` | string | — | Override title |
+| `cache_seconds` | number | `21600` | Cache duration |
+| `title_color` | hex | — | Title color |
+| `text_color` | hex | — | Text color |
+| `icon_color` | hex | — | Category icon color |
+| `bg_color` | hex | — | Background |
+| `border_color` | hex | — | Border color |
+
+---
+
+### `/api/compare` — Compare Users
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `user1` | string | — | **Required.** First GitHub username |
+| `user2` | string | — | **Required.** Second GitHub username |
+| `theme` | string | `default` | Theme |
+| `hide_border` | boolean | `false` | Hide border |
+| `border_radius` | number | `4.5` | Border radius |
+| `cache_seconds` | number | `21600` | Cache duration |
+| `title_color` | hex | — | Title color |
+| `text_color` | hex | — | Text color |
+| `icon_color` | hex | — | Icon color |
+| `bg_color` | hex | — | Background |
+| `border_color` | hex | — | Border color |
+
+---
+
+### `/api/sponsors` — Sponsors / Support
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `username` | string | — | **Required.** GitHub username |
+| `theme` | string | `default` | Theme |
+| `hide_border` | boolean | `false` | Hide border |
+| `border_radius` | number | `4.5` | Border radius |
+| `custom_title` | string | — | Override title |
 | `cache_seconds` | number | `21600` | Cache duration |
 | `title_color` | hex | — | Title color |
 | `text_color` | hex | — | Text color |
