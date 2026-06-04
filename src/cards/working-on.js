@@ -5,6 +5,30 @@ import { escapeHTML } from "../common/html.js";
 import { formatNumber } from "../common/fmt.js";
 
 /**
+ * @param {string} dateStr ISO date string.
+ * @returns {string} Human-readable time ago.
+ */
+const getTimeAgo = (dateStr) => {
+  const now = new Date();
+  const date = new Date(dateStr);
+  const diffMs = now.getTime() - date.getTime();
+  const diffMins = Math.floor(diffMs / 60000);
+  const diffHours = Math.floor(diffMins / 60);
+  const diffDays = Math.floor(diffHours / 24);
+
+  if (diffMins < 60) {
+    return `${diffMins}m ago`;
+  }
+  if (diffHours < 24) {
+    return `${diffHours}h ago`;
+  }
+  if (diffDays < 30) {
+    return `${diffDays}d ago`;
+  }
+  return `${Math.floor(diffDays / 30)}mo ago`;
+};
+
+/**
  * @param {object} data Working on data.
  * @param {object} options Card options.
  * @returns {string} SVG working-on card.
@@ -35,8 +59,11 @@ export const renderWorkingOnCard = (data, options = {}) => {
   const width = 495;
   const height = 240;
   const rx = border_radius === undefined ? 4.5 : Number(border_radius);
-  const bgFill = typeof bgColor === "object" ? bgColor[1] || "#0D1117" : bgColor;
-  const borderAttr = hide_border ? 'stroke-opacity="0"' : `stroke="${borderColor}"`;
+  const bgFill =
+    typeof bgColor === "object" ? bgColor[1] || "#0D1117" : bgColor;
+  const borderAttr = hide_border
+    ? 'stroke-opacity="0"'
+    : `stroke="${borderColor}"`;
 
   const title = custom_title || `${escapeHTML(data.name)} is working on`;
 
@@ -58,7 +85,9 @@ export const renderWorkingOnCard = (data, options = {}) => {
 
   const repo = data.repo;
   const timeAgo = getTimeAgo(repo.pushedAt);
-  const desc = repo.description ? escapeHTML(repo.description.slice(0, 80)) : "No description";
+  const desc = repo.description
+    ? escapeHTML(repo.description.slice(0, 80))
+    : "No description";
 
   const repoIcon = `<path d="M2 2.5A2.5 2.5 0 014.5 0h8.75a.75.75 0 01.75.75v12.5a.75.75 0 01-.75.75h-2.5a.75.75 0 110-1.5h1.75v-2h-8a1 1 0 00-.714 1.7.75.75 0 01-1.072 1.05A2.495 2.495 0 012 11.5v-9zm10.5-1h-8a1 1 0 00-1 1v6.708A2.486 2.486 0 014.5 9h8.5V1.5z" fill="${iconColor}"/>`;
   const starIcon = `<path d="M8 .25a.75.75 0 01.673.418l1.882 3.815 4.21.612a.75.75 0 01.416 1.279l-3.046 2.97.719 4.192a.75.75 0 01-1.088.791L8 12.347l-3.766 1.98a.75.75 0 01-1.088-.79l.72-4.194L.818 6.374a.75.75 0 01.416-1.28l4.21-.611L7.327.668A.75.75 0 018 .25z" fill="${iconColor}" opacity="0.7"/>`;
@@ -138,21 +167,3 @@ export const renderWorkingOnCard = (data, options = {}) => {
     </svg>
   `;
 };
-
-/**
- * @param {string} dateStr ISO date string.
- * @returns {string} Human-readable time ago.
- */
-function getTimeAgo(dateStr) {
-  const now = new Date();
-  const date = new Date(dateStr);
-  const diffMs = now.getTime() - date.getTime();
-  const diffMins = Math.floor(diffMs / 60000);
-  const diffHours = Math.floor(diffMins / 60);
-  const diffDays = Math.floor(diffHours / 24);
-
-  if (diffMins < 60) return `${diffMins}m ago`;
-  if (diffHours < 24) return `${diffHours}h ago`;
-  if (diffDays < 30) return `${diffDays}d ago`;
-  return `${Math.floor(diffDays / 30)}mo ago`;
-}

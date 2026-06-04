@@ -35,8 +35,11 @@ export const renderCompareCard = (user1, user2, options = {}) => {
   const width = 600;
   const height = 340;
   const rx = border_radius === undefined ? 4.5 : Number(border_radius);
-  const bgFill = typeof bgColor === "object" ? bgColor[1] || "#0D1117" : bgColor;
-  const borderAttr = hide_border ? 'stroke-opacity="0"' : `stroke="${borderColor}"`;
+  const bgFill =
+    typeof bgColor === "object" ? bgColor[1] || "#0D1117" : bgColor;
+  const borderAttr = hide_border
+    ? 'stroke-opacity="0"'
+    : `stroke="${borderColor}"`;
 
   const stats = [
     { label: "Commits", key: "totalCommits" },
@@ -69,13 +72,17 @@ export const renderCompareCard = (user1, user2, options = {}) => {
           font-family="'Segoe UI',Ubuntu,Sans-Serif" fill="${textColor}" opacity="0.5">${stat.label}</text>
         <text x="${colR}" y="${y}" font-size="16" font-weight="${rightWeight}"
           font-family="'Segoe UI',Ubuntu,Sans-Serif" fill="${titleColor}" opacity="${rightOpacity}">${formatNumber(v2)}</text>
-        ${winner !== "tie" ? `<circle cx="${winner === "left" ? colL + 12 : colR - 12}" cy="${y - 5}" r="3" fill="${iconColor}" opacity="0.6"/>` : ""}
+        ${winner === "tie" ? "" : `<circle cx="${winner === "left" ? colL + 12 : colR - 12}" cy="${y - 5}" r="3" fill="${iconColor}" opacity="0.6"/>`}
       `;
     })
     .join("");
 
-  const rank1 = user1.rank ? `${user1.rank.level} (${user1.rank.percentile.toFixed(0)}%)` : "";
-  const rank2 = user2.rank ? `${user2.rank.level} (${user2.rank.percentile.toFixed(0)}%)` : "";
+  const rank1 = user1.rank
+    ? `${user1.rank.level} (${user1.rank.percentile.toFixed(0)}%)`
+    : "";
+  const rank2 = user2.rank
+    ? `${user2.rank.level} (${user2.rank.percentile.toFixed(0)}%)`
+    : "";
   const rankY = startY + stats.length * rowHeight + 10;
 
   return `

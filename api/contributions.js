@@ -2,8 +2,16 @@
 
 import { renderContributionsCard } from "../src/cards/contributions.js";
 import { checkAccess } from "../src/common/access.js";
-import { CACHE_TTL, cacheTTL, applyCache, applyErrorCache } from "../src/common/cache.js";
-import { MissingFieldError, retrieveSecondaryMessage } from "../src/common/error.js";
+import {
+  CACHE_TTL,
+  cacheTTL,
+  applyCache,
+  applyErrorCache,
+} from "../src/common/cache.js";
+import {
+  MissingFieldError,
+  retrieveSecondaryMessage,
+} from "../src/common/error.js";
 import { toBool } from "../src/common/ops.js";
 import { buildErrorCard } from "../src/common/render.js";
 import { getContributions } from "../src/fetchers/contributions.js";
@@ -31,7 +39,9 @@ export default async (req, res) => {
     type: "username",
     colors: { title_color, text_color, bg_color, border_color, theme },
   });
-  if (!access.isPassed) return access.result;
+  if (!access.isPassed) {
+    return access.result;
+  }
 
   try {
     const data = await getContributions(username);
@@ -64,7 +74,11 @@ export default async (req, res) => {
           message: err.message,
           secondaryMessage: retrieveSecondaryMessage(err),
           renderOptions: {
-            title_color, text_color, bg_color, border_color, theme,
+            title_color,
+            text_color,
+            bg_color,
+            border_color,
+            theme,
             show_repo_link: !(err instanceof MissingFieldError),
           },
         }),
@@ -73,7 +87,13 @@ export default async (req, res) => {
     return res.send(
       buildErrorCard({
         message: "An unknown error occurred",
-        renderOptions: { title_color, text_color, bg_color, border_color, theme },
+        renderOptions: {
+          title_color,
+          text_color,
+          bg_color,
+          border_color,
+          theme,
+        },
       }),
     );
   }

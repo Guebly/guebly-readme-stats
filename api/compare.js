@@ -2,8 +2,16 @@
 
 import { renderCompareCard } from "../src/cards/compare.js";
 import { checkAccess } from "../src/common/access.js";
-import { CACHE_TTL, cacheTTL, applyCache, applyErrorCache } from "../src/common/cache.js";
-import { MissingFieldError, retrieveSecondaryMessage } from "../src/common/error.js";
+import {
+  CACHE_TTL,
+  cacheTTL,
+  applyCache,
+  applyErrorCache,
+} from "../src/common/cache.js";
+import {
+  MissingFieldError,
+  retrieveSecondaryMessage,
+} from "../src/common/error.js";
 import { toBool } from "../src/common/ops.js";
 import { buildErrorCard } from "../src/common/render.js";
 import { getUserStats } from "../src/fetchers/stats.js";
@@ -38,10 +46,14 @@ export default async (req, res) => {
   }
 
   const access1 = checkAccess({ res, id: user1, type: "username", colors });
-  if (!access1.isPassed) return access1.result;
+  if (!access1.isPassed) {
+    return access1.result;
+  }
 
   const access2 = checkAccess({ res, id: user2, type: "username", colors });
-  if (!access2.isPassed) return access2.result;
+  if (!access2.isPassed) {
+    return access2.result;
+  }
 
   try {
     const [stats1, stats2] = await Promise.all([

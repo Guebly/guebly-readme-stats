@@ -50,7 +50,7 @@ const SPONSORS_QUERY = `
 /**
  * @param {object} variables Fetcher variables.
  * @param {string} token GitHub token.
- * @returns {Promise<import('axios').AxiosResponse>}
+ * @returns {Promise<import('axios').AxiosResponse>} Axios response with sponsors data.
  */
 const fetcher = (variables, token) => {
   return graphqlRequest(

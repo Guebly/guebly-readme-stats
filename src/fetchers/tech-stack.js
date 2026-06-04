@@ -37,7 +37,7 @@ const TECH_STACK_QUERY = `
 /**
  * @param {object} variables Fetcher variables.
  * @param {string} token GitHub token.
- * @returns {Promise<import('axios').AxiosResponse>}
+ * @returns {Promise<import('axios').AxiosResponse>} Axios response with tech stack data.
  */
 const fetcher = (variables, token) => {
   return graphqlRequest(
@@ -48,28 +48,60 @@ const fetcher = (variables, token) => {
 
 const CATEGORIES = {
   Frontend: [
-    "JavaScript", "TypeScript", "HTML", "CSS", "SCSS", "Sass", "Less",
-    "Vue", "Svelte", "Astro", "MDX",
+    "JavaScript",
+    "TypeScript",
+    "HTML",
+    "CSS",
+    "SCSS",
+    "Sass",
+    "Less",
+    "Vue",
+    "Svelte",
+    "Astro",
+    "MDX",
   ],
   Backend: [
-    "Python", "Java", "Go", "Ruby", "PHP", "Rust", "C#", "Kotlin",
-    "Scala", "Elixir", "Erlang", "Haskell", "Clojure", "Perl", "Lua",
-    "Dart", "R", "Julia",
+    "Python",
+    "Java",
+    "Go",
+    "Ruby",
+    "PHP",
+    "Rust",
+    "C#",
+    "Kotlin",
+    "Scala",
+    "Elixir",
+    "Erlang",
+    "Haskell",
+    "Clojure",
+    "Perl",
+    "Lua",
+    "Dart",
+    "R",
+    "Julia",
   ],
   Systems: [
-    "C", "C++", "Assembly", "Zig", "Nim", "Objective-C", "Objective-C++",
-    "Makefile", "CMake",
+    "C",
+    "C++",
+    "Assembly",
+    "Zig",
+    "Nim",
+    "Objective-C",
+    "Objective-C++",
+    "Makefile",
+    "CMake",
   ],
-  Mobile: [
-    "Swift", "Kotlin", "Dart", "Objective-C",
-  ],
+  Mobile: ["Swift", "Kotlin", "Dart", "Objective-C"],
   DevOps: [
-    "Shell", "PowerShell", "Dockerfile", "Nix", "HCL", "Jsonnet",
+    "Shell",
+    "PowerShell",
+    "Dockerfile",
+    "Nix",
+    "HCL",
+    "Jsonnet",
     "Batchfile",
   ],
-  Data: [
-    "Jupyter Notebook", "R", "MATLAB", "SQL", "PLSQL",
-  ],
+  Data: ["Jupyter Notebook", "R", "MATLAB", "SQL", "PLSQL"],
 };
 
 /**
@@ -78,7 +110,9 @@ const CATEGORIES = {
  */
 const categorize = (langName) => {
   for (const [category, languages] of Object.entries(CATEGORIES)) {
-    if (languages.includes(langName)) return category;
+    if (languages.includes(langName)) {
+      return category;
+    }
   }
   return "Other";
 };
@@ -130,7 +164,9 @@ const getTechStack = async (username) => {
   const categorized = {};
   for (const lang of sorted) {
     const cat = categorize(lang.name);
-    if (!categorized[cat]) categorized[cat] = [];
+    if (!categorized[cat]) {
+      categorized[cat] = [];
+    }
     categorized[cat].push({
       name: lang.name,
       color: lang.color,

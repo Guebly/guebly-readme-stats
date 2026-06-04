@@ -35,7 +35,7 @@ const WORKING_ON_QUERY = `
 /**
  * @param {object} variables Fetcher variables.
  * @param {string} token GitHub token.
- * @returns {Promise<import('axios').AxiosResponse>}
+ * @returns {Promise<import('axios').AxiosResponse>} Axios response with working-on data.
  */
 const fetcher = (variables, token) => {
   return graphqlRequest(

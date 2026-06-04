@@ -35,8 +35,11 @@ export const renderContributionsCard = (data, options = {}) => {
   const width = 720;
   const height = 200;
   const rx = border_radius === undefined ? 4.5 : Number(border_radius);
-  const bgFill = typeof bgColor === "object" ? bgColor[1] || "#0D1117" : bgColor;
-  const borderAttr = hide_border ? 'stroke-opacity="0"' : `stroke="${borderColor}"`;
+  const bgFill =
+    typeof bgColor === "object" ? bgColor[1] || "#0D1117" : bgColor;
+  const borderAttr = hide_border
+    ? 'stroke-opacity="0"'
+    : `stroke="${borderColor}"`;
 
   const title = custom_title || `${escapeHTML(data.name)}'s Contributions`;
   const cellSize = 11;
@@ -47,20 +50,43 @@ export const renderContributionsCard = (data, options = {}) => {
 
   const maxCount = Math.max(
     1,
-    ...recentWeeks.flatMap((w) => w.contributionDays.map((d) => d.contributionCount)),
+    ...recentWeeks.flatMap((w) =>
+      w.contributionDays.map((d) => d.contributionCount),
+    ),
   );
 
   const getColor = (count) => {
-    if (count === 0) return typeof iconColor === "string" ? iconColor + "15" : "#30363d";
+    if (count === 0) {
+      return typeof iconColor === "string" ? iconColor + "15" : "#30363d";
+    }
     const intensity = count / maxCount;
-    if (intensity <= 0.25) return typeof iconColor === "string" ? iconColor + "40" : "#0e4429";
-    if (intensity <= 0.5) return typeof iconColor === "string" ? iconColor + "70" : "#006d32";
-    if (intensity <= 0.75) return typeof iconColor === "string" ? iconColor + "aa" : "#26a641";
+    if (intensity <= 0.25) {
+      return typeof iconColor === "string" ? iconColor + "40" : "#0e4429";
+    }
+    if (intensity <= 0.5) {
+      return typeof iconColor === "string" ? iconColor + "70" : "#006d32";
+    }
+    if (intensity <= 0.75) {
+      return typeof iconColor === "string" ? iconColor + "aa" : "#26a641";
+    }
     return iconColor;
   };
 
   const dayLabels = ["", "Mon", "", "Wed", "", "Fri", ""];
-  const monthLabels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  const monthLabels = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
 
   const gridStartX = 55;
   const gridStartY = 55;
@@ -75,7 +101,7 @@ export const renderContributionsCard = (data, options = {}) => {
       const y = gridStartY + day.weekday * totalCellSize;
       const color = getColor(day.contributionCount);
       cellsSvg += `<rect x="${x}" y="${y}" width="${cellSize}" height="${cellSize}" rx="2" ry="2" fill="${color}" data-count="${day.contributionCount}" data-date="${day.date}">
-        <title>${day.date}: ${day.contributionCount} contribution${day.contributionCount !== 1 ? "s" : ""}</title>
+        <title>${day.date}: ${day.contributionCount} contribution${day.contributionCount === 1 ? "" : "s"}</title>
       </rect>`;
 
       const month = new Date(day.date).getMonth();
@@ -94,11 +120,10 @@ export const renderContributionsCard = (data, options = {}) => {
     .join("");
 
   const dayLabelsSvg = dayLabels
-    .map(
-      (label, i) =>
-        label
-          ? `<text x="${gridStartX - 16}" y="${gridStartY + i * totalCellSize + 9}" text-anchor="end" font-size="9" font-family="'Segoe UI',Ubuntu,Sans-Serif" fill="${textColor}" opacity="0.5">${label}</text>`
-          : "",
+    .map((label, i) =>
+      label
+        ? `<text x="${gridStartX - 16}" y="${gridStartY + i * totalCellSize + 9}" text-anchor="end" font-size="9" font-family="'Segoe UI',Ubuntu,Sans-Serif" fill="${textColor}" opacity="0.5">${label}</text>`
+        : "",
     )
     .join("");
 

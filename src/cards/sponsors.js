@@ -3,13 +3,6 @@
 import { resolveColors } from "../common/color.js";
 import { escapeHTML } from "../common/html.js";
 
-const PROVIDER_ICONS = {
-  TWITTER: "M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z",
-  YOUTUBE: "M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z",
-  LINKEDIN: "M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2zM4 6a2 2 0 110-4 2 2 0 010 4z",
-  WEBSITE: "M7.775 3.275a.75.75 0 001.06 1.06l1.25-1.25a2 2 0 112.83 2.83l-2.5 2.5a2 2 0 01-2.83 0 .75.75 0 00-1.06 1.06 3.5 3.5 0 004.95 0l2.5-2.5a3.5 3.5 0 00-4.95-4.95l-1.25 1.25zm-4.69 9.64a2 2 0 010-2.83l2.5-2.5a2 2 0 012.83 0 .75.75 0 001.06-1.06 3.5 3.5 0 00-4.95 0l-2.5 2.5a3.5 3.5 0 004.95 4.95l1.25-1.25a.75.75 0 00-1.06-1.06l-1.25 1.25a2 2 0 01-2.83 0z",
-};
-
 /**
  * @param {object} data Sponsors data.
  * @param {object} options Card options.
@@ -40,8 +33,11 @@ export const renderSponsorsCard = (data, options = {}) => {
 
   const width = 495;
   const rx = border_radius === undefined ? 4.5 : Number(border_radius);
-  const bgFill = typeof bgColor === "object" ? bgColor[1] || "#0D1117" : bgColor;
-  const borderAttr = hide_border ? 'stroke-opacity="0"' : `stroke="${borderColor}"`;
+  const bgFill =
+    typeof bgColor === "object" ? bgColor[1] || "#0D1117" : bgColor;
+  const borderAttr = hide_border
+    ? 'stroke-opacity="0"'
+    : `stroke="${borderColor}"`;
 
   const title = custom_title || `Support ${escapeHTML(data.name)}`;
 
@@ -117,7 +113,8 @@ export const renderSponsorsCard = (data, options = {}) => {
     y += 26;
 
     data.socialLinks.slice(0, 4).forEach((link) => {
-      const displayText = link.displayName || link.url.replace(/^https?:\/\//, "");
+      const displayText =
+        link.displayName || link.url.replace(/^https?:\/\//, "");
       bodySvg += `
         <text x="${width / 2}" y="${y}" text-anchor="middle" font-size="12"
           font-family="'Segoe UI',Ubuntu,Sans-Serif"

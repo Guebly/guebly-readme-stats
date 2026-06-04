@@ -8,6 +8,11 @@ import socialCard from "./api/social.js";
 import streakCard from "./api/streak.js";
 import trophyCard from "./api/trophy.js";
 import profileCard from "./api/profile.js";
+import contributionsCard from "./api/contributions.js";
+import workingOnCard from "./api/working-on.js";
+import techStackCard from "./api/tech-stack.js";
+import compareCard from "./api/compare.js";
+import sponsorsCard from "./api/sponsors.js";
 import express from "express";
 
 const app = express();
@@ -22,6 +27,11 @@ router.get("/social", socialCard);
 router.get("/streak", streakCard);
 router.get("/trophy", trophyCard);
 router.get("/profile", profileCard);
+router.get("/contributions", contributionsCard);
+router.get("/working-on", workingOnCard);
+router.get("/tech-stack", techStackCard);
+router.get("/compare", compareCard);
+router.get("/sponsors", sponsorsCard);
 
 app.use("/api", router);
 
