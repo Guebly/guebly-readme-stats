@@ -60,6 +60,7 @@ const CATEGORIES = {
     "Astro",
     "MDX",
   ],
+  Mobile: ["Swift", "Kotlin", "Dart", "Objective-C"],
   Backend: [
     "Python",
     "Java",
@@ -68,7 +69,6 @@ const CATEGORIES = {
     "PHP",
     "Rust",
     "C#",
-    "Kotlin",
     "Scala",
     "Elixir",
     "Erlang",
@@ -76,22 +76,19 @@ const CATEGORIES = {
     "Clojure",
     "Perl",
     "Lua",
-    "Dart",
-    "R",
     "Julia",
   ],
+  Data: ["Jupyter Notebook", "R", "MATLAB", "SQL", "PLSQL"],
   Systems: [
     "C",
     "C++",
     "Assembly",
     "Zig",
     "Nim",
-    "Objective-C",
     "Objective-C++",
     "Makefile",
     "CMake",
   ],
-  Mobile: ["Swift", "Kotlin", "Dart", "Objective-C"],
   DevOps: [
     "Shell",
     "PowerShell",
@@ -101,7 +98,6 @@ const CATEGORIES = {
     "Jsonnet",
     "Batchfile",
   ],
-  Data: ["Jupyter Notebook", "R", "MATLAB", "SQL", "PLSQL"],
 };
 
 /**
@@ -144,9 +140,10 @@ const getTechStack = async (username) => {
 
   const user = res.data.data.user;
   const langMap = {};
+  const repos = user.repositories?.nodes || [];
 
-  for (const repo of user.repositories.nodes) {
-    for (const edge of repo.languages.edges) {
+  for (const repo of repos) {
+    for (const edge of repo.languages?.edges || []) {
       const name = edge.node.name;
       if (!langMap[name]) {
         langMap[name] = { size: 0, color: edge.node.color || "#858585" };

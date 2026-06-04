@@ -1,8 +1,22 @@
 // @ts-check
 
 import { resolveColors } from "../common/color.js";
+import { resolveGradient } from "../common/gradient.js";
 import { escapeHTML } from "../common/html.js";
 import { formatNumber } from "../common/fmt.js";
+
+/**
+ * @param {string} baseColor Hex color string (e.g. "#6E40C9").
+ * @param {number} alpha Opacity from 0 to 1.
+ * @returns {string} rgba() color string.
+ */
+const withAlpha = (baseColor, alpha) => {
+  const hex = baseColor.replace("#", "");
+  const r = parseInt(hex.substring(0, 2) || hex[0] + hex[0], 16);
+  const g = parseInt(hex.substring(2, 4) || hex[1] + hex[1], 16);
+  const b = parseInt(hex.substring(4, 6) || hex[2] + hex[2], 16);
+  return `rgba(${r},${g},${b},${alpha})`;
+};
 
 /**
  * @param {object} data Contributions data.
@@ -29,19 +43,19 @@ export const renderContributionsCard = (data, options = {}) => {
       icon_color,
       bg_color,
       border_color,
+      ring_color: "",
       theme,
     });
 
   const width = 720;
   const height = 200;
   const rx = border_radius === undefined ? 4.5 : Number(border_radius);
-  const bgFill =
-    typeof bgColor === "object" ? bgColor[1] || "#0D1117" : bgColor;
+  const { bgFill, gradientDef } = resolveGradient(bgColor);
   const borderAttr = hide_border
     ? 'stroke-opacity="0"'
     : `stroke="${borderColor}"`;
 
-  const title = custom_title || `${escapeHTML(data.name)}'s Contributions`;
+  const title = custom_title || `${data.name}'s Contributions`;
   const cellSize = 11;
   const cellGap = 2;
   const totalCellSize = cellSize + cellGap;
@@ -51,23 +65,23 @@ export const renderContributionsCard = (data, options = {}) => {
   const maxCount = Math.max(
     1,
     ...recentWeeks.flatMap((w) =>
-      w.contributionDays.map((d) => d.contributionCount),
+      (w.contributionDays || []).map((d) => d.contributionCount),
     ),
   );
 
   const getColor = (count) => {
     if (count === 0) {
-      return typeof iconColor === "string" ? iconColor + "15" : "#30363d";
+      return withAlpha(iconColor, 0.08);
     }
     const intensity = count / maxCount;
     if (intensity <= 0.25) {
-      return typeof iconColor === "string" ? iconColor + "40" : "#0e4429";
+      return withAlpha(iconColor, 0.25);
     }
     if (intensity <= 0.5) {
-      return typeof iconColor === "string" ? iconColor + "70" : "#006d32";
+      return withAlpha(iconColor, 0.45);
     }
     if (intensity <= 0.75) {
-      return typeof iconColor === "string" ? iconColor + "aa" : "#26a641";
+      return withAlpha(iconColor, 0.7);
     }
     return iconColor;
   };
@@ -96,12 +110,12 @@ export const renderContributionsCard = (data, options = {}) => {
   let lastMonth = -1;
 
   recentWeeks.forEach((week, wi) => {
-    week.contributionDays.forEach((day) => {
+    (week.contributionDays || []).forEach((day) => {
       const x = gridStartX + wi * totalCellSize;
       const y = gridStartY + day.weekday * totalCellSize;
       const color = getColor(day.contributionCount);
       cellsSvg += `<rect x="${x}" y="${y}" width="${cellSize}" height="${cellSize}" rx="2" ry="2" fill="${color}" data-count="${day.contributionCount}" data-date="${day.date}">
-        <title>${day.date}: ${day.contributionCount} contribution${day.contributionCount === 1 ? "" : "s"}</title>
+        <title>${escapeHTML(day.date)}: ${day.contributionCount} contribution${day.contributionCount === 1 ? "" : "s"}</title>
       </rect>`;
 
       const month = new Date(day.date).getMonth();
@@ -134,6 +148,8 @@ export const renderContributionsCard = (data, options = {}) => {
       fill="none" xmlns="http://www.w3.org/2000/svg" role="img"
       aria-labelledby="contribTitle">
       <title id="contribTitle">${escapeHTML(title)}</title>
+
+      ${gradientDef}
 
       <rect x="0.5" y="0.5" rx="${rx}" width="${width - 1}" height="${height - 1}"
         fill="${bgFill}" ${borderAttr}/>

@@ -1,6 +1,7 @@
 // @ts-check
 
 import { resolveColors } from "../common/color.js";
+import { resolveGradient } from "../common/gradient.js";
 import { escapeHTML } from "../common/html.js";
 import { formatNumber } from "../common/fmt.js";
 
@@ -29,14 +30,14 @@ export const renderCompareCard = (user1, user2, options = {}) => {
       icon_color,
       bg_color,
       border_color,
+      ring_color: "",
       theme,
     });
 
   const width = 600;
   const height = 340;
   const rx = border_radius === undefined ? 4.5 : Number(border_radius);
-  const bgFill =
-    typeof bgColor === "object" ? bgColor[1] || "#0D1117" : bgColor;
+  const { bgFill, gradientDef } = resolveGradient(bgColor);
   const borderAttr = hide_border
     ? 'stroke-opacity="0"'
     : `stroke="${borderColor}"`;
@@ -77,12 +78,19 @@ export const renderCompareCard = (user1, user2, options = {}) => {
     })
     .join("");
 
-  const rank1 = user1.rank
-    ? `${user1.rank.level} (${user1.rank.percentile.toFixed(0)}%)`
-    : "";
-  const rank2 = user2.rank
-    ? `${user2.rank.level} (${user2.rank.percentile.toFixed(0)}%)`
-    : "";
+  const formatRank = (user) => {
+    if (!user.rank) {
+      return "";
+    }
+    const percentile =
+      typeof user.rank.percentile === "number"
+        ? user.rank.percentile.toFixed(0)
+        : "?";
+    return `${user.rank.level} (${percentile}%)`;
+  };
+
+  const rank1 = formatRank(user1);
+  const rank2 = formatRank(user2);
   const rankY = startY + stats.length * rowHeight + 10;
 
   return `
@@ -95,6 +103,8 @@ export const renderCompareCard = (user1, user2, options = {}) => {
         .compare-anim { animation: fadeInCompare 0.6s ease-in-out forwards; opacity: 0; }
         @keyframes fadeInCompare { to { opacity: 1; } }
       </style>
+
+      ${gradientDef}
 
       <rect x="0.5" y="0.5" rx="${rx}" width="${width - 1}" height="${height - 1}"
         fill="${bgFill}" ${borderAttr}/>

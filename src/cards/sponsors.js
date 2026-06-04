@@ -1,6 +1,7 @@
 // @ts-check
 
 import { resolveColors } from "../common/color.js";
+import { resolveGradient } from "../common/gradient.js";
 import { escapeHTML } from "../common/html.js";
 
 /**
@@ -28,23 +29,24 @@ export const renderSponsorsCard = (data, options = {}) => {
       icon_color,
       bg_color,
       border_color,
+      ring_color: "",
       theme,
     });
 
   const width = 495;
   const rx = border_radius === undefined ? 4.5 : Number(border_radius);
-  const bgFill =
-    typeof bgColor === "object" ? bgColor[1] || "#0D1117" : bgColor;
+  const { bgFill, gradientDef } = resolveGradient(bgColor);
   const borderAttr = hide_border
     ? 'stroke-opacity="0"'
     : `stroke="${borderColor}"`;
 
-  const title = custom_title || `Support ${escapeHTML(data.name)}`;
+  const title = custom_title || `Support ${data.name}`;
 
   const heartIcon = `<path d="M7.655 14.916v-.001h-.002l-.006-.003-.018-.01a7.643 7.643 0 01-.245-.14 15.576 15.576 0 01-2.734-2.072C2.8 10.881 1 8.684 1 5.5 1 2.934 3.012 1 5.5 1 6.858 1 8.065 1.627 8.882 2.596 9.697 1.627 10.903 1 12.26 1 14.748 1 16.76 2.934 16.76 5.5c0 3.184-1.8 5.381-3.65 7.19a15.576 15.576 0 01-2.979 2.212l-.018.01-.006.004h-.002z" fill="${iconColor}"/>`;
 
   let y = 60;
   let bodySvg = "";
+  let defsSvg = "";
 
   if (data.hasSponsorsListing) {
     bodySvg += `
@@ -83,10 +85,10 @@ export const renderSponsorsCard = (data, options = {}) => {
 
       data.sponsors.forEach((s, i) => {
         const x = startX + i * (avatarSize + gap);
+        defsSvg += `<clipPath id="sp-${i}"><circle cx="${x + avatarSize / 2}" cy="${y + avatarSize / 2}" r="${avatarSize / 2}"/></clipPath>`;
         bodySvg += `
-          <clipPath id="sp-${i}"><circle cx="${x + avatarSize / 2}" cy="${y + avatarSize / 2}" r="${avatarSize / 2}"/></clipPath>
           <image x="${x}" y="${y}" width="${avatarSize}" height="${avatarSize}"
-            clip-path="url(#sp-${i})" href="${s.avatarUrl}"
+            clip-path="url(#sp-${i})" href="${escapeHTML(s.avatarUrl)}"
             preserveAspectRatio="xMidYMid slice"/>
         `;
       });
@@ -131,6 +133,9 @@ export const renderSponsorsCard = (data, options = {}) => {
       fill="none" xmlns="http://www.w3.org/2000/svg" role="img"
       aria-labelledby="sponsorsTitle">
       <title id="sponsorsTitle">${escapeHTML(title)}</title>
+
+      ${gradientDef}
+      ${defsSvg ? `<defs>${defsSvg}</defs>` : ""}
 
       <rect x="0.5" y="0.5" rx="${rx}" width="${width - 1}" height="${height - 1}"
         fill="${bgFill}" ${borderAttr}/>

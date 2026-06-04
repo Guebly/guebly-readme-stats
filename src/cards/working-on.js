@@ -1,6 +1,7 @@
 // @ts-check
 
 import { resolveColors } from "../common/color.js";
+import { resolveGradient } from "../common/gradient.js";
 import { escapeHTML } from "../common/html.js";
 import { formatNumber } from "../common/fmt.js";
 
@@ -11,11 +12,14 @@ import { formatNumber } from "../common/fmt.js";
 const getTimeAgo = (dateStr) => {
   const now = new Date();
   const date = new Date(dateStr);
-  const diffMs = now.getTime() - date.getTime();
+  const diffMs = Math.max(0, now.getTime() - date.getTime());
   const diffMins = Math.floor(diffMs / 60000);
   const diffHours = Math.floor(diffMins / 60);
   const diffDays = Math.floor(diffHours / 24);
 
+  if (diffMins < 1) {
+    return "just now";
+  }
   if (diffMins < 60) {
     return `${diffMins}m ago`;
   }
@@ -53,24 +57,24 @@ export const renderWorkingOnCard = (data, options = {}) => {
       icon_color,
       bg_color,
       border_color,
+      ring_color: "",
       theme,
     });
 
   const width = 495;
-  const height = 240;
   const rx = border_radius === undefined ? 4.5 : Number(border_radius);
-  const bgFill =
-    typeof bgColor === "object" ? bgColor[1] || "#0D1117" : bgColor;
+  const { bgFill, gradientDef } = resolveGradient(bgColor);
   const borderAttr = hide_border
     ? 'stroke-opacity="0"'
     : `stroke="${borderColor}"`;
 
-  const title = custom_title || `${escapeHTML(data.name)} is working on`;
+  const title = custom_title || `${data.name} is working on`;
 
   if (!data.repo) {
     return `
       <svg width="${width}" height="120" viewBox="0 0 ${width} 120"
         fill="none" xmlns="http://www.w3.org/2000/svg" role="img">
+        ${gradientDef}
         <rect x="0.5" y="0.5" rx="${rx}" width="${width - 1}" height="119"
           fill="${bgFill}" ${borderAttr}/>
         <text x="25" y="35" font-size="16" font-weight="600"
@@ -93,17 +97,31 @@ export const renderWorkingOnCard = (data, options = {}) => {
   const starIcon = `<path d="M8 .25a.75.75 0 01.673.418l1.882 3.815 4.21.612a.75.75 0 01.416 1.279l-3.046 2.97.719 4.192a.75.75 0 01-1.088.791L8 12.347l-3.766 1.98a.75.75 0 01-1.088-.79l.72-4.194L.818 6.374a.75.75 0 01.416-1.28l4.21-.611L7.327.668A.75.75 0 018 .25z" fill="${iconColor}" opacity="0.7"/>`;
   const forkIcon = `<path d="M5 3.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm0 2.122a2.25 2.25 0 10-1.5 0v.878A2.25 2.25 0 005.75 8.5h1.5v2.128a2.251 2.251 0 101.5 0V8.5h1.5a2.25 2.25 0 002.25-2.25v-.878a2.25 2.25 0 10-1.5 0v.878a.75.75 0 01-.75.75h-4.5A.75.75 0 015 6.25v-.878zm3.75 7.378a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm3-8.75a.75.75 0 100-1.5.75.75 0 000 1.5z" fill="${iconColor}" opacity="0.7"/>`;
 
-  const recentListSvg = data.recentRepos
-    .slice(1, 4)
+  const recentRepos = data.recentRepos.slice(1, 4);
+  const hasRecent = recentRepos.length > 0;
+  const height = hasRecent ? 240 : 140;
+
+  const recentListSvg = recentRepos
     .map((r, i) => {
       const y = 160 + i * 22;
+      const langLabel = r.language || "Unknown";
       return `
         <circle cx="35" cy="${y - 4}" r="4" fill="${r.languageColor}"/>
         <text x="45" y="${y}" font-size="12" font-family="'Segoe UI',Ubuntu,Sans-Serif" fill="${textColor}" opacity="0.6">${escapeHTML(r.name)}</text>
-        <text x="${width - 25}" y="${y}" text-anchor="end" font-size="10" font-family="'Segoe UI',Ubuntu,Sans-Serif" fill="${textColor}" opacity="0.35">${escapeHTML(r.language)}</text>
+        <text x="${width - 25}" y="${y}" text-anchor="end" font-size="10" font-family="'Segoe UI',Ubuntu,Sans-Serif" fill="${textColor}" opacity="0.35">${escapeHTML(langLabel)}</text>
       `;
     })
     .join("");
+
+  const recentSection = hasRecent
+    ? `<g class="working-on-anim" style="animation-delay: 0.6s;">
+        <line x1="25" y1="136" x2="${width - 25}" y2="136" stroke="${textColor}" stroke-opacity="0.1"/>
+        <text x="25" y="154" font-size="11" font-weight="600"
+          font-family="'Segoe UI',Ubuntu,Sans-Serif"
+          fill="${textColor}" opacity="0.4" letter-spacing="1">RECENT ACTIVITY</text>
+        ${recentListSvg}
+      </g>`
+    : "";
 
   return `
     <svg width="${width}" height="${height}" viewBox="0 0 ${width} ${height}"
@@ -115,6 +133,8 @@ export const renderWorkingOnCard = (data, options = {}) => {
         .working-on-anim { animation: fadeIn 0.8s ease-in-out forwards; opacity: 0; }
         @keyframes fadeIn { to { opacity: 1; } }
       </style>
+
+      ${gradientDef}
 
       <rect x="0.5" y="0.5" rx="${rx}" width="${width - 1}" height="${height - 1}"
         fill="${bgFill}" ${borderAttr}/>
@@ -157,13 +177,7 @@ export const renderWorkingOnCard = (data, options = {}) => {
           fill="${textColor}" opacity="0.4">updated ${escapeHTML(timeAgo)}</text>
       </g>
 
-      <g class="working-on-anim" style="animation-delay: 0.6s;">
-        <line x1="25" y1="136" x2="${width - 25}" y2="136" stroke="${textColor}" stroke-opacity="0.1"/>
-        <text x="25" y="154" font-size="11" font-weight="600"
-          font-family="'Segoe UI',Ubuntu,Sans-Serif"
-          fill="${textColor}" opacity="0.4" letter-spacing="1">RECENT ACTIVITY</text>
-        ${recentListSvg}
-      </g>
+      ${recentSection}
     </svg>
   `;
 };
