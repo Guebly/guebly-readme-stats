@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Guebly ReadMe Stats — Instagram Story</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #000; display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+  .story {
+    width: 1080px; height: 1920px;
+    background: linear-gradient(180deg, #06080c 0%, #160d2b 50%, #06080c 100%);
+    position: relative; overflow: hidden;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: 80px 60px;
+  }
+  .glow {
+    position: absolute; top: 100px; left: 50%; transform: translateX(-50%);
+    width: 800px; height: 500px;
+    background: radial-gradient(ellipse, rgba(110,64,201,0.2) 0%, transparent 70%);
+  }
+  .glow2 {
+    position: absolute; bottom: 200px; left: 50%; transform: translateX(-50%);
+    width: 600px; height: 400px;
+    background: radial-gradient(ellipse, rgba(34,211,238,0.08) 0%, transparent 70%);
+  }
+  .content { position: relative; z-index: 1; text-align: center; width: 100%; }
+  .logo {
+    font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 82px;
+    background: linear-gradient(135deg, #6E40C9 0%, #A855F7 50%, #22D3EE 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    margin-bottom: 24px; line-height: 1.1;
+  }
+  .subtitle {
+    font-family: 'Outfit', sans-serif; font-size: 32px; color: #7d8590;
+    margin-bottom: 60px; line-height: 1.4;
+  }
+  .stats {
+    display: flex; justify-content: center; gap: 40px; margin-bottom: 60px;
+  }
+  .stat {
+    text-align: center;
+  }
+  .stat-num {
+    font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 64px;
+    color: #A855F7;
+  }
+  .stat-label {
+    font-family: 'JetBrains Mono', monospace; font-size: 18px; color: #7d8590;
+    margin-top: 4px;
+  }
+  .features-list {
+    text-align: left; margin: 0 auto; max-width: 700px;
+  }
+  .feature-item {
+    font-family: 'Outfit', sans-serif; font-size: 28px; color: #c9d1d9;
+    padding: 14px 0;
+    border-bottom: 1px solid rgba(110,64,201,0.1);
+    display: flex; align-items: center; gap: 16px;
+  }
+  .feature-dot {
+    width: 10px; height: 10px; border-radius: 50%; background: #6E40C9; flex-shrink: 0;
+  }
+  .url {
+    font-family: 'JetBrains Mono', monospace; font-size: 28px;
+    color: rgba(167,139,250,0.7); margin-top: 60px;
+  }
+  .badge-row {
+    display: flex; gap: 16px; justify-content: center; margin-top: 24px;
+  }
+  .badge {
+    background: rgba(110,64,201,0.1); border: 1px solid rgba(110,64,201,0.25);
+    border-radius: 12px; padding: 12px 24px;
+    font-family: 'JetBrains Mono', monospace; font-size: 18px; color: #A855F7;
+    font-weight: 600;
+  }
+</style>
+</head>
+<body>
+<div class="story">
+  <div class="glow"></div>
+  <div class="glow2"></div>
+  <div class="content">
+    <div class="logo">Guebly<br>ReadMe Stats</div>
+    <div class="subtitle">GitHub stats cards<br>for your profile</div>
+
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-num">14</div>
+        <div class="stat-label">Card Types</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">70+</div>
+        <div class="stat-label">Themes</div>
+      </div>
+    </div>
+
+    <div class="features-list">
+      <div class="feature-item"><div class="feature-dot"></div>Contributions Heatmap</div>
+      <div class="feature-item"><div class="feature-dot"></div>Activity Graph</div>
+      <div class="feature-item"><div class="feature-dot"></div>Tech Stack Breakdown</div>
+      <div class="feature-item"><div class="feature-dot"></div>Compare Two Devs</div>
+      <div class="feature-item"><div class="feature-dot"></div>Download PNG & Story</div>
+      <div class="feature-item"><div class="feature-dot"></div>Embed Anywhere</div>
+    </div>
+
+    <div class="url">readme.stats.guebly.com.br</div>
+    <div class="badge-row">
+      <div class="badge">Open Source</div>
+      <div class="badge">Free Forever</div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
