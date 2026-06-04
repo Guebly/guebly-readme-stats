@@ -99,11 +99,11 @@ export const renderWorkingOnCard = (data, options = {}) => {
 
   const recentRepos = data.recentRepos.slice(1, 4);
   const hasRecent = recentRepos.length > 0;
-  const height = hasRecent ? 240 : 140;
+  const height = hasRecent ? 140 + 24 + recentRepos.length * 24 + 20 : 140;
 
   const recentListSvg = recentRepos
     .map((r, i) => {
-      const y = 160 + i * 22;
+      const y = 178 + i * 24;
       const langLabel = r.language || "Unknown";
       return `
         <circle cx="35" cy="${y - 4}" r="4" fill="${r.languageColor}"/>
