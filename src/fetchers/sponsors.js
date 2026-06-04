@@ -15,10 +15,6 @@ const SPONSORS_QUERY = `
       login
       avatarUrl
       hasSponsorsListing
-      sponsorsListing {
-        fullDescription
-        shortDescription
-      }
       sponsors(first: 30) {
         totalCount
         nodes {
@@ -34,13 +30,6 @@ const SPONSORS_QUERY = `
       }
       sponsoring(first: 1) {
         totalCount
-      }
-      socialAccounts(first: 10) {
-        nodes {
-          provider
-          url
-          displayName
-        }
       }
       websiteUrl
     }
@@ -86,12 +75,7 @@ const getSponsors = async (username) => {
 
   const user = res.data.data.user;
 
-  const socialLinks = (user.socialAccounts?.nodes || []).map((s) => ({
-    provider: s.provider,
-    url: s.url,
-    displayName: s.displayName,
-  }));
-
+  const socialLinks = [];
   if (user.websiteUrl) {
     socialLinks.push({
       provider: "WEBSITE",
@@ -100,18 +84,23 @@ const getSponsors = async (username) => {
     });
   }
 
+  const sponsorNodes = user.sponsors?.nodes || [];
+
   return {
     name: user.name || user.login,
     login: user.login,
     avatarUrl: user.avatarUrl,
-    hasSponsorsListing: user.hasSponsorsListing,
-    sponsorCount: user.sponsors.totalCount,
-    sponsoringCount: user.sponsoring.totalCount,
-    sponsors: user.sponsors.nodes.slice(0, 12).map((s) => ({
-      login: s.login,
-      avatarUrl: s.avatarUrl,
-    })),
-    description: user.sponsorsListing?.shortDescription || "",
+    hasSponsorsListing: user.hasSponsorsListing || false,
+    sponsorCount: user.sponsors?.totalCount || 0,
+    sponsoringCount: user.sponsoring?.totalCount || 0,
+    sponsors: sponsorNodes
+      .filter((s) => s && s.login)
+      .slice(0, 12)
+      .map((s) => ({
+        login: s.login,
+        avatarUrl: s.avatarUrl,
+      })),
+    description: "",
     socialLinks,
   };
 };
