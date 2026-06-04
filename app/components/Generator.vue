@@ -158,8 +158,11 @@
         <div class="preview-area fade-up fade-d4">
           <div class="preview-card">
             <div class="preview-ambient" />
-            <div v-if="!generatedUrl" class="preview-placeholder mono">
-              Type a {{ cardType === 'gist' ? 'Gist ID' : 'username' }} to preview
+            <div v-if="cardType === 'full-profile' && username.trim()" class="preview-placeholder mono preview-fullprofile">
+              Full Profile README generated below — copy the Markdown code
+            </div>
+            <div v-else-if="!generatedUrl" class="preview-placeholder mono">
+              Type a {{ cardType === 'gist' ? 'Gist ID' : cardType === 'wakatime' ? 'WakaTime username' : 'username' }} to preview
             </div>
             <div v-else-if="previewError" class="preview-placeholder mono preview-error">
               {{ previewError }}
@@ -183,7 +186,7 @@
           </div>
 
           <!-- ── Share Panel ─────────────────── -->
-          <div class="share-panel" v-if="generatedUrl">
+          <div class="share-panel" v-if="generatedUrl || (cardType === 'full-profile' && username.trim())">
             <div class="share-label mono">Share your card</div>
             <div class="share-row">
               <button class="share-btn download" @click="downloadPng" :disabled="downloading">
@@ -295,8 +298,7 @@ const generatedUrl = computed(() => {
   };
 
   if (cardType.value === "full-profile") {
-    if (!username.value.trim()) return "";
-    return buildFullProfileMarkdown();
+    return "";
   }
 
   if (cardType.value === "gist") {
@@ -341,21 +343,6 @@ const generatedUrl = computed(() => {
   return `${baseUrl}${paths[cardType.value]}?${params}`;
 });
 
-const buildFullProfileMarkdown = () => {
-  const u = enc(username.value);
-  const t = theme.value;
-  const hb = hideBorder.value ? "&hide_border=true" : "";
-  const l = locale.value ? `&locale=${locale.value}` : "";
-  let colors = "";
-  if (customTitleColor.value) colors += `&title_color=${enc(customTitleColor.value)}`;
-  if (customTextColor.value) colors += `&text_color=${enc(customTextColor.value)}`;
-  if (customIconColor.value) colors += `&icon_color=${enc(customIconColor.value)}`;
-  if (customBgColor.value) colors += `&bg_color=${enc(customBgColor.value)}`;
-  if (customBorderColor.value) colors += `&border_color=${enc(customBorderColor.value)}`;
-  const base = baseUrl;
-  return `FULL_PROFILE:${base}:${u}:${t}:${hb}:${l}:${colors}`;
-};
-
 const enc = (v) => encodeURIComponent(v.trim());
 
 // ── Preview URL (cache-busted so CDN never serves stale layout) ────
@@ -369,9 +356,8 @@ watch(generatedUrl, () => { previewRev.value = Date.now(); }, { immediate: true 
 
 // ── Code output ────────────────────────
 const codeOutput = computed(() => {
-  if (!generatedUrl.value) return "";
-
   if (cardType.value === "full-profile") {
+    if (!username.value.trim()) return "";
     const u = enc(username.value);
     const t = theme.value;
     const hb = hideBorder.value ? "&hide_border=true" : "";
@@ -402,6 +388,7 @@ const codeOutput = computed(() => {
 </div>`;
   }
 
+  if (!generatedUrl.value) return "";
   const url = generatedUrl.value;
   if (codeTab.value === "md") return `![GitHub Stats](${url})`;
   if (codeTab.value === "html") return `<img src="${url}" alt="GitHub Stats" />`;
@@ -683,6 +670,7 @@ select option { background: var(--surface-2); color: var(--text); }
 }
 .preview-placeholder { color: var(--text-muted); font-size: 14px; z-index: 1; text-align: center; }
 .preview-error { color: #f87171; font-size: 13px; }
+.preview-fullprofile { color: var(--accent-light); font-size: 14px; font-weight: 600; }
 .preview-img {
   max-width: 100%; height: auto; border-radius: 8px;
   position: relative; z-index: 1;
