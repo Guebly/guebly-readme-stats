@@ -28,6 +28,8 @@ const endpoints = [
   { path: "/api/tech-stack?username=:user", desc: "Tech Stack", isNew: true },
   { path: "/api/compare?user1=:user1&user2=:user2", desc: "Compare Users", isNew: true },
   { path: "/api/sponsors?username=:user", desc: "Sponsors / Support", isNew: true },
+  { path: "/api/activity-graph?username=:user", desc: "Activity Graph", isNew: true },
+  { path: "/api/status/rate-limit", desc: "Rate Limit Dashboard (JSON)", isNew: true },
 ];
 </script>
 

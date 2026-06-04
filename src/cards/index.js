@@ -8,3 +8,4 @@ export { renderWorkingOnCard } from "./working-on.js";
 export { renderTechStackCard } from "./tech-stack.js";
 export { renderCompareCard } from "./compare.js";
 export { renderSponsorsCard } from "./sponsors.js";
+export { renderActivityGraphCard } from "./activity-graph.js";

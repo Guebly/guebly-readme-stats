@@ -44,6 +44,7 @@ Just paste a URL into your README, customize with query parameters, and you're d
 | 11 | **Tech Stack** | `/api/tech-stack` | Languages grouped by category (Frontend, Backend, etc.) |
 | 12 | **Compare Users** | `/api/compare` | Side-by-side stats comparison of two users |
 | 13 | **Sponsors / Support** | `/api/sponsors` | GitHub Sponsors info and social links |
+| 14 | **Activity Graph** | `/api/activity-graph` | Monthly contributions line chart (sparkline) |
 
 ---
 
@@ -123,6 +124,12 @@ Replace `YOUR_USERNAME` with your GitHub username.
 
 ```md
 ![Sponsors](https://readme.stats.guebly.com.br/api/sponsors?username=YOUR_USERNAME&theme=guebly&hide_border=true)
+```
+
+### Activity Graph
+
+```md
+![Activity](https://readme.stats.guebly.com.br/api/activity-graph?username=YOUR_USERNAME&theme=guebly&hide_border=true)
 ```
 
 ### Full Profile README
@@ -438,6 +445,52 @@ Format: `angle,color1,color2[,color3...]`
 | `icon_color` | hex | — | Icon color |
 | `bg_color` | hex | — | Background |
 | `border_color` | hex | — | Border color |
+
+---
+
+### `/api/activity-graph` — Activity Graph
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `username` | string | — | **Required.** GitHub username |
+| `theme` | string | `default` | Theme |
+| `hide_border` | boolean | `false` | Hide border |
+| `border_radius` | number | `4.5` | Border radius |
+| `custom_title` | string | — | Override title |
+| `cache_seconds` | number | `21600` | Cache duration |
+| `title_color` | hex | — | Title color |
+| `text_color` | hex | — | Text color |
+| `icon_color` | hex | — | Line and dot color |
+| `bg_color` | hex | — | Background |
+| `border_color` | hex | — | Border color |
+
+---
+
+### `/api/status/rate-limit` — Rate Limit Dashboard
+
+Returns JSON with token status, remaining rate limit quota, and health overview. No authentication required.
+
+```
+GET https://readme.stats.guebly.com.br/api/status/rate-limit
+```
+
+---
+
+## Embed Mode
+
+Share your card on any website, portfolio, or Notion page using the embed page:
+
+```
+https://readme.stats.guebly.com.br/embed.html?url=YOUR_CARD_URL
+```
+
+Or use query parameters directly:
+
+```
+https://readme.stats.guebly.com.br/embed.html?username=YOUR_USERNAME&type=stats&theme=guebly
+```
+
+Available types: `stats`, `top-langs`, `streak`, `social`, `trophy`, `contributions`, `activity-graph`, `working-on`, `tech-stack`, `sponsors`.
 
 ---
 

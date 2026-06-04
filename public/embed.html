@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guebly ReadMe Stats — Embed</title>
+  <meta name="description" content="Embedded GitHub stats card by Guebly ReadMe Stats">
+  <link rel="icon" href="https://www.guebly.com.br/guebly.png" type="image/png">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      flex-direction: column; gap: 24px;
+      background: #06080c;
+      font-family: 'Outfit', sans-serif;
+      color: #e6edf3;
+    }
+    .embed-card {
+      max-width: 90vw;
+      filter: drop-shadow(0 8px 32px rgba(0,0,0,0.5));
+    }
+    .embed-card img {
+      max-width: 100%; height: auto;
+      border-radius: 8px;
+    }
+    .embed-error {
+      color: #f87171;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 14px;
+      text-align: center;
+      padding: 40px;
+    }
+    .embed-branding {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: rgba(167,139,250,0.5);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .embed-branding:hover { color: rgba(167,139,250,0.8); }
+    .embed-loading {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 14px;
+      color: #7d8590;
+    }
+  </style>
+</head>
+<body>
+  <div id="embed-container">
+    <div class="embed-loading">Loading card...</div>
+  </div>
+  <a href="https://readme.stats.guebly.com.br" class="embed-branding" target="_blank" rel="noopener">
+    readme.stats.guebly.com.br
+  </a>
+
+  <script>
+    (function() {
+      const params = new URLSearchParams(window.location.search);
+      const url = params.get('url');
+      const container = document.getElementById('embed-container');
+
+      if (!url) {
+        const cardType = params.get('type') || 'stats';
+        const username = params.get('username');
+        if (!username) {
+          container.innerHTML = '<div class="embed-error">Missing parameters. Use ?url=CARD_URL or ?username=USER&type=stats</div>';
+          return;
+        }
+
+        const pathMap = {
+          stats: '/api',
+          'top-langs': '/api/top-langs',
+          streak: '/api/streak',
+          social: '/api/social',
+          trophy: '/api/trophy',
+          contributions: '/api/contributions',
+          'working-on': '/api/working-on',
+          'tech-stack': '/api/tech-stack',
+          'activity-graph': '/api/activity-graph',
+          sponsors: '/api/sponsors',
+        };
+
+        const basePath = pathMap[cardType] || '/api';
+        const extraParams = new URLSearchParams(params);
+        extraParams.delete('type');
+        extraParams.delete('username');
+        const cardUrl = window.location.origin + basePath + '?username=' + encodeURIComponent(username) + '&' + extraParams.toString();
+        renderCard(cardUrl);
+      } else {
+        renderCard(url);
+      }
+
+      function renderCard(cardUrl) {
+        const img = new Image();
+        img.onload = function() {
+          container.innerHTML = '';
+          const wrapper = document.createElement('div');
+          wrapper.className = 'embed-card';
+          wrapper.appendChild(img);
+          container.appendChild(wrapper);
+          document.title = 'Guebly ReadMe Stats — Embed';
+        };
+        img.onerror = function() {
+          container.innerHTML = '<div class="embed-error">Failed to load card. Check the URL.</div>';
+        };
+        img.src = cardUrl;
+        img.alt = 'GitHub Stats Card';
+      }
+    })();
+  </script>
+</body>
+</html>

@@ -4,6 +4,16 @@ Todas as mudanças relevantes do projeto estão documentadas aqui.
 
 ---
 
+## v2.1.0 — 2026-06-04
+
+### Novos
+- **Activity Graph** (`/api/activity-graph`) — Gráfico de linhas com contribuições mensais (sparkline animado com área preenchida)
+- **Rate Limit Dashboard** (`/api/status/rate-limit`) — Endpoint JSON com status de todos os tokens, cota restante e saúde geral
+- **Embed Mode** (`/embed.html`) — Página standalone para embedar cards em portfólios, Notion, blogs e qualquer site
+- Botão **Embed** no painel de compartilhamento do gerador visual
+
+---
+
 ## v2.0.0 — 2026-06-03
 
 ### Novos Cards

@@ -13,6 +13,8 @@ import workingOnCard from "./api/working-on.js";
 import techStackCard from "./api/tech-stack.js";
 import compareCard from "./api/compare.js";
 import sponsorsCard from "./api/sponsors.js";
+import activityGraphCard from "./api/activity-graph.js";
+import rateLimitStatus from "./api/status/rate-limit.js";
 import express from "express";
 
 const app = express();
@@ -32,6 +34,8 @@ router.get("/working-on", workingOnCard);
 router.get("/tech-stack", techStackCard);
 router.get("/compare", compareCard);
 router.get("/sponsors", sponsorsCard);
+router.get("/activity-graph", activityGraphCard);
+router.get("/status/rate-limit", rateLimitStatus);
 
 app.use("/api", router);
 

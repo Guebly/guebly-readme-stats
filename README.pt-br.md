@@ -44,6 +44,7 @@ Cole uma URL no seu README, configure com parâmetros e pronto. O card aparece l
 | 11 | **Tech Stack** | `/api/tech-stack` | Linguagens agrupadas por categoria (Frontend, Backend, etc.) |
 | 12 | **Compare Users** | `/api/compare` | Comparação lado a lado de dois usuários |
 | 13 | **Sponsors / Support** | `/api/sponsors` | Informações de GitHub Sponsors e links sociais |
+| 14 | **Activity Graph** | `/api/activity-graph` | Gráfico de linhas com contribuições mensais |
 
 ---
 
@@ -123,6 +124,12 @@ Copie qualquer snippet abaixo e substitua `SEU_USUARIO` pelo seu username do Git
 
 ```md
 ![Sponsors](https://readme.stats.guebly.com.br/api/sponsors?username=SEU_USUARIO&theme=guebly&hide_border=true)
+```
+
+### Activity Graph
+
+```md
+![Activity](https://readme.stats.guebly.com.br/api/activity-graph?username=SEU_USUARIO&theme=guebly&hide_border=true)
 ```
 
 ### README de Perfil Completo
