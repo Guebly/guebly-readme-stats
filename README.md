@@ -2,186 +2,191 @@
 
 <img src="https://readme.stats.guebly.com.br/api?username=degabrielofi&theme=guebly&show_icons=true&hide_border=true&count_private=true" width="420" alt="Guebly Stats Card" />
 
-# ⚡ Guebly ReadMe Stats
+# Guebly ReadMe Stats
 
-**Dynamic, beautiful GitHub stats cards for your profile README — always up to date.**
+**Cards SVG dinâmicos e bonitos para o README do seu perfil GitHub — sempre atualizados.**
 
-[![Live Demo](https://img.shields.io/badge/🌐_Live_Demo-readme.stats.guebly.com.br-6E40C9?style=for-the-badge&logoColor=white)](https://readme.stats.guebly.com.br)
-[![License MIT](https://img.shields.io/badge/License-MIT-22c55e?style=for-the-badge)](./LICENSE)
-[![Made by Guebly](https://img.shields.io/badge/Made_by-Guebly-0D1117?style=for-the-badge&logo=github)](https://guebly.com.br)
+[![Deploy](https://img.shields.io/badge/Deploy-readme.stats.guebly.com.br-6E40C9?style=for-the-badge&logoColor=white)](https://readme.stats.guebly.com.br)
+[![Versão](https://img.shields.io/badge/v2.1.0-estável-22c55e?style=for-the-badge)](https://github.com/Guebly/guebly-readme-stats/releases)
+[![Licença MIT](https://img.shields.io/badge/Licença-MIT-22c55e?style=for-the-badge)](./LICENSE)
 [![Node 22+](https://img.shields.io/badge/Node.js-22+-339933?style=for-the-badge&logo=node.js&logoColor=white)](https://nodejs.org)
+[![Feito por Guebly](https://img.shields.io/badge/Feito_por-Guebly-0D1117?style=for-the-badge&logo=github)](https://guebly.com.br)
 
-**[🇧🇷 Documentação em Português](./README.pt-br.md)**
+**[English version](./README.pt-br.md)**
 
 </div>
 
 ---
 
-## What is this?
+## O que é?
 
-**Guebly ReadMe Stats** generates beautiful, dynamic SVG cards for your GitHub profile README — updated automatically on every request. No image editing, no manual updates.
+O **Guebly ReadMe Stats** gera cards SVG bonitos e dinâmicos para o README do seu perfil GitHub — atualizados automaticamente a cada requisição. Sem edição de imagem, sem atualizações manuais.
 
-Just paste a URL into your README, customize with query parameters, and you're done.
+Basta colar uma URL no seu README, personalizar com parâmetros de query e pronto.
 
-> Use the visual generator at **[readme.stats.guebly.com.br](https://readme.stats.guebly.com.br)** — configure your card, copy the snippet, and even download as PNG to share on Instagram, LinkedIn, Twitter, and WhatsApp.
+> Use o gerador visual em **[readme.stats.guebly.com.br](https://readme.stats.guebly.com.br)** — configure seu card, copie o snippet e baixe como PNG para compartilhar no Instagram, LinkedIn, Twitter e WhatsApp.
 
 ---
 
-## Available card types
+## Tipos de cards disponíveis
 
-| # | Card | Endpoint | Shows |
+| # | Card | Endpoint | Exibe |
 |---|------|----------|-------|
-| 1 | **Stats** | `/api` | Commits, PRs, issues, stars, GitHub rank |
-| 2 | **Top Languages** | `/api/top-langs` | Most used programming languages |
-| 3 | **Streak** | `/api/streak` | Current and longest contribution streak |
-| 4 | **Social** | `/api/social` | Avatar, name, followers and quick stats |
-| 5 | **Trophy** | `/api/trophy` | GitHub achievement badges |
-| 6 | **Repo Pin** | `/api/pin` | Highlight a specific repository |
-| 7 | **Gist** | `/api/gist` | Display a gist with code highlighting |
-| 8 | **WakaTime** | `/api/wakatime` | Coding time breakdown by language |
-| 9 | **Contributions Heatmap** | `/api/contributions` | GitHub-style contribution calendar heatmap |
-| 10 | **Currently Working On** | `/api/working-on` | Most recently pushed repository with details |
-| 11 | **Tech Stack** | `/api/tech-stack` | Languages grouped by category (Frontend, Backend, etc.) |
-| 12 | **Compare Users** | `/api/compare` | Side-by-side stats comparison of two users |
-| 13 | **Sponsors / Support** | `/api/sponsors` | GitHub Sponsors info and social links |
-| 14 | **Activity Graph** | `/api/activity-graph` | Monthly contributions line chart (sparkline) |
+| 1 | **Stats** | `/api` | Commits, PRs, issues, estrelas, ranking GitHub |
+| 2 | **Top Languages** | `/api/top-langs` | Linguagens de programação mais usadas |
+| 3 | **Streak** | `/api/streak` | Sequência atual e mais longa de contribuições |
+| 4 | **Social** | `/api/social` | Avatar, nome, seguidores e estatísticas rápidas |
+| 5 | **Trophy** | `/api/trophy` | Badges de conquistas GitHub |
+| 6 | **Repo Pin** | `/api/pin` | Destaque de um repositório específico |
+| 7 | **Gist** | `/api/gist` | Exibição de gist com highlight de código |
+| 8 | **WakaTime** | `/api/wakatime` | Tempo de codificação por linguagem |
+| 9 | **Contributions Heatmap** | `/api/contributions` | Calendário de contribuições estilo GitHub |
+| 10 | **Currently Working On** | `/api/working-on` | Repositório com push mais recente |
+| 11 | **Tech Stack** | `/api/tech-stack` | Linguagens agrupadas por categoria (Frontend, Backend, etc.) |
+| 12 | **Compare Users** | `/api/compare` | Comparação lado a lado de dois usuários |
+| 13 | **Sponsors / Support** | `/api/sponsors` | Info de GitHub Sponsors e links sociais |
+| 14 | **Activity Graph** | `/api/activity-graph` | Gráfico de contribuições mensais (sparkline) |
 
 ---
 
-## Quick Start
+## Início rápido
 
-Replace `YOUR_USERNAME` with your GitHub username.
+Substitua `SEU_USUARIO` pelo seu nome de usuário do GitHub.
 
 ### Stats Card
 
 ```md
-![GitHub Stats](https://readme.stats.guebly.com.br/api?username=YOUR_USERNAME&theme=guebly&show_icons=true&hide_border=true)
+![GitHub Stats](https://readme.stats.guebly.com.br/api?username=SEU_USUARIO&theme=guebly&show_icons=true&hide_border=true)
 ```
 
 ### Top Languages
 
 ```md
-![Top Langs](https://readme.stats.guebly.com.br/api/top-langs?username=YOUR_USERNAME&theme=guebly&layout=compact&hide_border=true)
+![Top Langs](https://readme.stats.guebly.com.br/api/top-langs?username=SEU_USUARIO&theme=guebly&layout=compact&hide_border=true)
 ```
 
 ### Streak Card
 
 ```md
-![Streak](https://readme.stats.guebly.com.br/api/streak?username=YOUR_USERNAME&theme=guebly&hide_border=true)
+![Streak](https://readme.stats.guebly.com.br/api/streak?username=SEU_USUARIO&theme=guebly&hide_border=true)
 ```
 
 ### Social Card
 
 ```md
-![Social](https://readme.stats.guebly.com.br/api/social?username=YOUR_USERNAME&theme=guebly&hide_border=true)
+![Social](https://readme.stats.guebly.com.br/api/social?username=SEU_USUARIO&theme=guebly&hide_border=true)
 ```
 
 ### Trophy Card
 
 ```md
-![Trophies](https://readme.stats.guebly.com.br/api/trophy?username=YOUR_USERNAME&theme=guebly&hide_border=true)
+![Trophies](https://readme.stats.guebly.com.br/api/trophy?username=SEU_USUARIO&theme=guebly&hide_border=true)
 ```
 
 ### Repo Pin
 
 ```md
-[![My Repo](https://readme.stats.guebly.com.br/api/pin?username=YOUR_USERNAME&repo=REPO_NAME&theme=guebly)](https://github.com/YOUR_USERNAME/REPO_NAME)
+[![Meu Repo](https://readme.stats.guebly.com.br/api/pin?username=SEU_USUARIO&repo=NOME_DO_REPO&theme=guebly)](https://github.com/SEU_USUARIO/NOME_DO_REPO)
 ```
 
 ### WakaTime Card
 
-> Requires a public [WakaTime](https://wakatime.com) profile.
+> Requer um perfil público no [WakaTime](https://wakatime.com).
 
 ```md
-![WakaTime](https://readme.stats.guebly.com.br/api/wakatime?username=YOUR_WAKATIME_USERNAME&theme=guebly&hide_border=true)
+![WakaTime](https://readme.stats.guebly.com.br/api/wakatime?username=SEU_USUARIO_WAKATIME&theme=guebly&hide_border=true)
 ```
 
 ### Contributions Heatmap
 
 ```md
-![Contributions](https://readme.stats.guebly.com.br/api/contributions?username=YOUR_USERNAME&theme=guebly&hide_border=true)
+![Contributions](https://readme.stats.guebly.com.br/api/contributions?username=SEU_USUARIO&theme=guebly&hide_border=true)
 ```
 
 ### Currently Working On
 
 ```md
-![Working On](https://readme.stats.guebly.com.br/api/working-on?username=YOUR_USERNAME&theme=guebly&hide_border=true)
+![Working On](https://readme.stats.guebly.com.br/api/working-on?username=SEU_USUARIO&theme=guebly&hide_border=true)
 ```
 
 ### Tech Stack
 
 ```md
-![Tech Stack](https://readme.stats.guebly.com.br/api/tech-stack?username=YOUR_USERNAME&theme=guebly&hide_border=true)
+![Tech Stack](https://readme.stats.guebly.com.br/api/tech-stack?username=SEU_USUARIO&theme=guebly&hide_border=true)
 ```
 
 ### Compare Users
 
 ```md
-![Compare](https://readme.stats.guebly.com.br/api/compare?user1=YOUR_USERNAME&user2=OTHER_USER&theme=guebly&hide_border=true)
+![Compare](https://readme.stats.guebly.com.br/api/compare?user1=SEU_USUARIO&user2=OUTRO_USUARIO&theme=guebly&hide_border=true)
 ```
 
 ### Sponsors Card
 
 ```md
-![Sponsors](https://readme.stats.guebly.com.br/api/sponsors?username=YOUR_USERNAME&theme=guebly&hide_border=true)
+![Sponsors](https://readme.stats.guebly.com.br/api/sponsors?username=SEU_USUARIO&theme=guebly&hide_border=true)
 ```
 
 ### Activity Graph
 
 ```md
-![Activity](https://readme.stats.guebly.com.br/api/activity-graph?username=YOUR_USERNAME&theme=guebly&hide_border=true)
+![Activity](https://readme.stats.guebly.com.br/api/activity-graph?username=SEU_USUARIO&theme=guebly&hide_border=true)
 ```
 
-### Full Profile README
+### README completo do perfil
 
-Use the **Full Profile README** option in the [visual generator](https://readme.stats.guebly.com.br) to generate a complete README.md with multiple cards combined — just paste into your profile repository.
+Use a opção **Full Profile README** no [gerador visual](https://readme.stats.guebly.com.br) para gerar um README.md completo com múltiplos cards combinados — basta colar no repositório do seu perfil.
 
 ---
 
-## Themes
+## Temas
 
-### Guebly Exclusive Themes ⚡
+### Temas exclusivos Guebly
 
-Created specifically for this project — only available here.
+Criados especificamente para este projeto — disponíveis apenas aqui.
 
-| Theme | Style |
-|-------|-------|
-| `guebly` | Purple on dark — the signature look |
-| `guebly_neon` | Purple + cyan glow |
-| `guebly_aurora` | Green + violet gradient |
-| `guebly_sunset` | Warm orange on deep dark |
-| `guebly_ice` | Cyan frost |
-| `guebly_rose` | Pink on noir |
-| `guebly_matrix` | Green terminal aesthetic |
-| `guebly_minimal` | Neutral monochrome |
-| `guebly_gold` | Gold on dark amber |
-| `guebly_cyber` | Cyberpunk purple haze |
+<div align="center">
 
-### Classic Themes
+| Tema | Estilo | Preview |
+|------|--------|---------|
+| `guebly` | Roxo em fundo escuro — o visual assinatura | ![guebly](https://readme.stats.guebly.com.br/api?username=degabrielofi&theme=guebly&show_icons=true&hide_border=true&card_width=300&disable_animations=true) |
+| `guebly_neon` | Roxo + ciano brilhante | ![guebly_neon](https://readme.stats.guebly.com.br/api?username=degabrielofi&theme=guebly_neon&show_icons=true&hide_border=true&card_width=300&disable_animations=true) |
+| `guebly_aurora` | Verde + violeta degradê | ![guebly_aurora](https://readme.stats.guebly.com.br/api?username=degabrielofi&theme=guebly_aurora&show_icons=true&hide_border=true&card_width=300&disable_animations=true) |
+| `guebly_sunset` | Laranja quente em fundo escuro | ![guebly_sunset](https://readme.stats.guebly.com.br/api?username=degabrielofi&theme=guebly_sunset&show_icons=true&hide_border=true&card_width=300&disable_animations=true) |
+| `guebly_ice` | Ciano gélido | ![guebly_ice](https://readme.stats.guebly.com.br/api?username=degabrielofi&theme=guebly_ice&show_icons=true&hide_border=true&card_width=300&disable_animations=true) |
+| `guebly_rose` | Rosa em fundo noir | ![guebly_rose](https://readme.stats.guebly.com.br/api?username=degabrielofi&theme=guebly_rose&show_icons=true&hide_border=true&card_width=300&disable_animations=true) |
+| `guebly_matrix` | Estética terminal verde | ![guebly_matrix](https://readme.stats.guebly.com.br/api?username=degabrielofi&theme=guebly_matrix&show_icons=true&hide_border=true&card_width=300&disable_animations=true) |
+| `guebly_minimal` | Monocromático neutro | ![guebly_minimal](https://readme.stats.guebly.com.br/api?username=degabrielofi&theme=guebly_minimal&show_icons=true&hide_border=true&card_width=300&disable_animations=true) |
+| `guebly_gold` | Dourado em fundo âmbar | ![guebly_gold](https://readme.stats.guebly.com.br/api?username=degabrielofi&theme=guebly_gold&show_icons=true&hide_border=true&card_width=300&disable_animations=true) |
+| `guebly_cyber` | Névoa roxa cyberpunk | ![guebly_cyber](https://readme.stats.guebly.com.br/api?username=degabrielofi&theme=guebly_cyber&show_icons=true&hide_border=true&card_width=300&disable_animations=true) |
 
-`dark` · `radical` · `merko` · `gruvbox` · `tokyonight` · `onedark` · `cobalt` · `synthwave` · `dracula` · `github_dark` · `github_dark_dimmed` · `catppuccin_mocha` · `nord` · `react` · `nightowl` · `aura` · `rose_pine` · `outrun` · `ambient_gradient` · `monokai` · `highcontrast` · 40+ more.
+</div>
 
-Full theme preview: [themes/README.md](./themes/README.md)
+### Temas clássicos
 
-### Using a theme
+`dark` · `radical` · `merko` · `gruvbox` · `tokyonight` · `onedark` · `cobalt` · `synthwave` · `dracula` · `github_dark` · `github_dark_dimmed` · `catppuccin_mocha` · `nord` · `react` · `nightowl` · `aura` · `rose_pine` · `outrun` · `ambient_gradient` · `monokai` · `highcontrast` · mais de 40 outros.
 
-```md
-![Stats](https://readme.stats.guebly.com.br/api?username=YOUR_USERNAME&theme=guebly_neon)
-```
+Preview completo dos temas: [themes/README.md](./themes/README.md)
 
-### Custom colors (via URL)
-
-Override any color individually with hex values (no `#`). Works on all card types:
+### Usando um tema
 
 ```md
-![Stats](https://readme.stats.guebly.com.br/api?username=YOUR_USERNAME&title_color=6E40C9&text_color=ffffff&icon_color=A78BFA&bg_color=0D1117&border_color=30363D)
+![Stats](https://readme.stats.guebly.com.br/api?username=SEU_USUARIO&theme=guebly_neon)
 ```
 
-You can also use the **Custom Colors** panel in the visual generator to preview colors in real-time before copying the URL.
+### Cores personalizadas (via URL)
 
-### Gradient background
+Sobrescreva qualquer cor individualmente com valores hex (sem `#`). Funciona em todos os tipos de cards:
 
-Format: `angle,color1,color2[,color3...]`
+```md
+![Stats](https://readme.stats.guebly.com.br/api?username=SEU_USUARIO&title_color=6E40C9&text_color=ffffff&icon_color=A78BFA&bg_color=0D1117&border_color=30363D)
+```
+
+Você também pode usar o painel **Custom Colors** no gerador visual para pré-visualizar as cores em tempo real antes de copiar a URL.
+
+### Fundo com degradê
+
+Formato: `angulo,cor1,cor2[,cor3...]`
 
 ```md
 &bg_color=30,6E40C9,0D1117
@@ -189,286 +194,289 @@ Format: `angle,color1,color2[,color3...]`
 
 ---
 
-## API Reference
+## Referência da API
+
+---
 
 ### `/api` — Stats Card
 
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `username` | string | — | **Required.** GitHub username |
-| `theme` | string | `default` | Card theme |
-| `show_icons` | boolean | `false` | Show stat icons |
-| `hide` | string | — | Hide stats (comma-separated): `stars`, `commits`, `prs`, `issues`, `contribs` |
-| `hide_rank` | boolean | `false` | Hide the rank circle |
-| `show` | string | — | Extra stats: `prs_merged`, `prs_merged_percentage`, `discussions_started`, `discussions_answered` |
-| `include_all_commits` | boolean | `false` | Count all-time commits |
-| `count_private` | boolean | `false` | Count commits from private repos (requires GitHub Settings › Profile › "Private contributions" = ON) |
-| `custom_title` | string | — | Override card title |
-| `hide_title` | boolean | `false` | Hide card title |
-| `hide_border` | boolean | `false` | Hide card border |
-| `card_width` | number | — | Custom width in px |
-| `border_radius` | number | `4.5` | Border radius in px |
-| `rank_icon` | string | `default` | Rank icon style: `default`, `github`, `percentile` |
-| `locale` | string | `en` | Language code (ISO 639-1) |
-| `disable_animations` | boolean | `false` | Disable SVG animations |
-| `cache_seconds` | number | `21600` | Cache duration in seconds (min 21600) |
-| `title_color` | hex | — | Title color (no `#`) |
-| `text_color` | hex | — | Body text color |
-| `icon_color` | hex | — | Icon color |
-| `ring_color` | hex | — | Rank ring color |
-| `bg_color` | hex | — | Background or gradient |
-| `border_color` | hex | — | Border color |
+| Parâmetro | Tipo | Padrão | Descrição |
+|-----------|------|--------|-----------|
+| `username` | string | — | **Obrigatório.** Nome de usuário do GitHub |
+| `theme` | string | `default` | Tema do card |
+| `show_icons` | boolean | `false` | Mostrar ícones das estatísticas |
+| `hide` | string | — | Ocultar stats (separados por vírgula): `stars`, `commits`, `prs`, `issues`, `contribs` |
+| `hide_rank` | boolean | `false` | Ocultar o círculo de ranking |
+| `show` | string | — | Stats extras: `prs_merged`, `prs_merged_percentage`, `discussions_started`, `discussions_answered` |
+| `include_all_commits` | boolean | `false` | Contar commits de todos os tempos |
+| `count_private` | boolean | `false` | Contar commits de repos privados (requer GitHub Settings > Profile > "Private contributions" = ON) |
+| `custom_title` | string | — | Título customizado |
+| `hide_title` | boolean | `false` | Ocultar título |
+| `hide_border` | boolean | `false` | Ocultar borda |
+| `card_width` | number | — | Largura customizada em px |
+| `border_radius` | number | `4.5` | Raio da borda em px |
+| `rank_icon` | string | `default` | Estilo do ícone de ranking: `default`, `github`, `percentile` |
+| `locale` | string | `en` | Código do idioma (ISO 639-1) |
+| `disable_animations` | boolean | `false` | Desabilitar animações SVG |
+| `cache_seconds` | number | `21600` | Duração do cache em segundos (mín. 21600) |
+| `title_color` | hex | — | Cor do título (sem `#`) |
+| `text_color` | hex | — | Cor do texto |
+| `icon_color` | hex | — | Cor dos ícones |
+| `ring_color` | hex | — | Cor do anel de ranking |
+| `bg_color` | hex | — | Fundo ou degradê |
+| `border_color` | hex | — | Cor da borda |
 
 ---
 
 ### `/api/top-langs` — Top Languages
 
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `username` | string | — | **Required.** |
-| `theme` | string | `default` | Theme |
+| Parâmetro | Tipo | Padrão | Descrição |
+|-----------|------|--------|-----------|
+| `username` | string | — | **Obrigatório.** |
+| `theme` | string | `default` | Tema |
 | `layout` | string | `normal` | Layout: `normal`, `compact`, `donut`, `donut-vertical`, `pie` |
-| `langs_count` | number | `5` | Number of languages (max 20) |
-| `hide` | string | — | Languages to hide (comma-separated) |
-| `custom_title` | string | — | Override title |
-| `hide_title` | boolean | `false` | Hide title |
-| `hide_border` | boolean | `false` | Hide border |
-| `card_width` | number | — | Width in px |
-| `border_radius` | number | `4.5` | Border radius |
-| `locale` | string | `en` | Language code |
-| `cache_seconds` | number | `21600` | Cache duration |
-| `title_color` | hex | — | Title color |
-| `text_color` | hex | — | Text color |
-| `bg_color` | hex | — | Background |
-| `border_color` | hex | — | Border color |
+| `langs_count` | number | `5` | Número de linguagens (máx. 20) |
+| `hide` | string | — | Linguagens a ocultar (separadas por vírgula) |
+| `custom_title` | string | — | Título customizado |
+| `hide_title` | boolean | `false` | Ocultar título |
+| `hide_border` | boolean | `false` | Ocultar borda |
+| `card_width` | number | — | Largura em px |
+| `border_radius` | number | `4.5` | Raio da borda |
+| `locale` | string | `en` | Código do idioma |
+| `cache_seconds` | number | `21600` | Duração do cache |
+| `title_color` | hex | — | Cor do título |
+| `text_color` | hex | — | Cor do texto |
+| `icon_color` | hex | — | Cor dos ícones |
+| `bg_color` | hex | — | Fundo |
+| `border_color` | hex | — | Cor da borda |
 
 ---
 
 ### `/api/streak` — Streak Card
 
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `username` | string | — | **Required.** |
-| `theme` | string | `default` | Theme |
-| `hide_border` | boolean | `false` | Hide border |
-| `border_radius` | number | `4.5` | Border radius |
-| `locale` | string | `en` | Language code |
-| `cache_seconds` | number | `21600` | Cache duration |
-| `title_color` | hex | — | Title color |
-| `text_color` | hex | — | Text color |
-| `icon_color` | hex | — | Flame icon color |
-| `bg_color` | hex | — | Background |
-| `border_color` | hex | — | Border color |
+| Parâmetro | Tipo | Padrão | Descrição |
+|-----------|------|--------|-----------|
+| `username` | string | — | **Obrigatório.** |
+| `theme` | string | `default` | Tema |
+| `hide_border` | boolean | `false` | Ocultar borda |
+| `border_radius` | number | `4.5` | Raio da borda |
+| `locale` | string | `en` | Código do idioma |
+| `cache_seconds` | number | `21600` | Duração do cache |
+| `title_color` | hex | — | Cor do título |
+| `text_color` | hex | — | Cor do texto |
+| `icon_color` | hex | — | Cor do ícone de fogo |
+| `bg_color` | hex | — | Fundo |
+| `border_color` | hex | — | Cor da borda |
 
 ---
 
 ### `/api/social` — Social Card
 
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `username` | string | — | **Required.** |
-| `theme` | string | `default` | Theme |
-| `hide_border` | boolean | `false` | Hide border |
-| `border_radius` | number | `4.5` | Border radius |
-| `cache_seconds` | number | `21600` | Cache duration |
-| `title_color` | hex | — | Name color |
-| `text_color` | hex | — | Text and stats color |
-| `icon_color` | hex | — | Icon and avatar ring color |
-| `bg_color` | hex | — | Background |
-| `border_color` | hex | — | Border color |
+| Parâmetro | Tipo | Padrão | Descrição |
+|-----------|------|--------|-----------|
+| `username` | string | — | **Obrigatório.** |
+| `theme` | string | `default` | Tema |
+| `hide_border` | boolean | `false` | Ocultar borda |
+| `border_radius` | number | `4.5` | Raio da borda |
+| `cache_seconds` | number | `21600` | Duração do cache |
+| `title_color` | hex | — | Cor do nome |
+| `text_color` | hex | — | Cor do texto e stats |
+| `icon_color` | hex | — | Cor dos ícones e anel do avatar |
+| `bg_color` | hex | — | Fundo |
+| `border_color` | hex | — | Cor da borda |
 
 ---
 
 ### `/api/trophy` — Trophy Card
 
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `username` | string | — | **Required.** |
-| `theme` | string | `default` | Theme |
-| `hide_border` | boolean | `false` | Hide border |
-| `cache_seconds` | number | `21600` | Cache duration |
-| `title_color` | hex | — | Title color |
-| `text_color` | hex | — | Text color |
-| `icon_color` | hex | — | Icon color |
-| `bg_color` | hex | — | Background |
-| `border_color` | hex | — | Border color |
+| Parâmetro | Tipo | Padrão | Descrição |
+|-----------|------|--------|-----------|
+| `username` | string | — | **Obrigatório.** |
+| `theme` | string | `default` | Tema |
+| `hide_border` | boolean | `false` | Ocultar borda |
+| `cache_seconds` | number | `21600` | Duração do cache |
+| `title_color` | hex | — | Cor do título |
+| `text_color` | hex | — | Cor do texto |
+| `icon_color` | hex | — | Cor dos ícones |
+| `bg_color` | hex | — | Fundo |
+| `border_color` | hex | — | Cor da borda |
 
 ---
 
 ### `/api/pin` — Repo Pin
 
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `username` | string | — | **Required.** |
-| `repo` | string | — | **Required.** Repository name |
-| `theme` | string | `default` | Theme |
-| `show_owner` | boolean | `false` | Show owner in title |
-| `hide_border` | boolean | `false` | Hide border |
-| `border_radius` | number | `4.5` | Border radius |
-| `locale` | string | `en` | Language code |
-| `description_lines_count` | number | `3` | Max description lines |
-| `cache_seconds` | number | `1800` | Cache duration |
-| `title_color` | hex | — | Title color |
-| `text_color` | hex | — | Text color |
-| `icon_color` | hex | — | Icon color |
-| `bg_color` | hex | — | Background |
-| `border_color` | hex | — | Border color |
+| Parâmetro | Tipo | Padrão | Descrição |
+|-----------|------|--------|-----------|
+| `username` | string | — | **Obrigatório.** |
+| `repo` | string | — | **Obrigatório.** Nome do repositório |
+| `theme` | string | `default` | Tema |
+| `show_owner` | boolean | `false` | Mostrar dono no título |
+| `hide_border` | boolean | `false` | Ocultar borda |
+| `border_radius` | number | `4.5` | Raio da borda |
+| `locale` | string | `en` | Código do idioma |
+| `description_lines_count` | number | `3` | Máx. de linhas da descrição |
+| `cache_seconds` | number | `1800` | Duração do cache |
+| `title_color` | hex | — | Cor do título |
+| `text_color` | hex | — | Cor do texto |
+| `icon_color` | hex | — | Cor dos ícones |
+| `bg_color` | hex | — | Fundo |
+| `border_color` | hex | — | Cor da borda |
 
 ---
 
 ### `/api/gist` — Gist Card
 
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `id` | string | — | **Required.** Gist ID |
-| `username` | string | — | Gist owner username |
-| `theme` | string | `default` | Theme |
-| `hide_border` | boolean | `false` | Hide border |
-| `border_radius` | number | `4.5` | Border radius |
-| `cache_seconds` | number | `1800` | Cache duration |
-| `title_color` | hex | — | Title color |
-| `text_color` | hex | — | Text color |
-| `icon_color` | hex | — | Icon color |
-| `bg_color` | hex | — | Background |
-| `border_color` | hex | — | Border color |
+| Parâmetro | Tipo | Padrão | Descrição |
+|-----------|------|--------|-----------|
+| `id` | string | — | **Obrigatório.** ID do Gist |
+| `username` | string | — | Dono do gist |
+| `theme` | string | `default` | Tema |
+| `hide_border` | boolean | `false` | Ocultar borda |
+| `border_radius` | number | `4.5` | Raio da borda |
+| `cache_seconds` | number | `1800` | Duração do cache |
+| `title_color` | hex | — | Cor do título |
+| `text_color` | hex | — | Cor do texto |
+| `icon_color` | hex | — | Cor dos ícones |
+| `bg_color` | hex | — | Fundo |
+| `border_color` | hex | — | Cor da borda |
 
 ---
 
 ### `/api/wakatime` — WakaTime Card
 
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `username` | string | — | **Required.** WakaTime username |
-| `theme` | string | `default` | Theme |
+| Parâmetro | Tipo | Padrão | Descrição |
+|-----------|------|--------|-----------|
+| `username` | string | — | **Obrigatório.** Usuário do WakaTime |
+| `theme` | string | `default` | Tema |
 | `layout` | string | `normal` | Layout: `normal`, `compact` |
-| `langs_count` | number | `5` | Languages to display |
-| `api_domain` | string | `wakatime.com` | Custom WakaTime API domain |
-| `range` | string | — | Range: `last_7_days`, `last_30_days`, `last_6_months`, `last_year`, `all_time` |
-| `custom_title` | string | — | Override title |
-| `hide_title` | boolean | `false` | Hide title |
-| `hide_border` | boolean | `false` | Hide border |
-| `border_radius` | number | `4.5` | Border radius |
-| `locale` | string | `en` | Language code |
-| `cache_seconds` | number | `21600` | Cache duration |
-| `title_color` | hex | — | Title color |
-| `text_color` | hex | — | Text color |
-| `icon_color` | hex | — | Icon color |
-| `bg_color` | hex | — | Background |
-| `border_color` | hex | — | Border color |
+| `langs_count` | number | `5` | Linguagens a exibir |
+| `api_domain` | string | `wakatime.com` | Domínio customizado da API WakaTime |
+| `range` | string | — | Período: `last_7_days`, `last_30_days`, `last_6_months`, `last_year`, `all_time` |
+| `custom_title` | string | — | Título customizado |
+| `hide_title` | boolean | `false` | Ocultar título |
+| `hide_border` | boolean | `false` | Ocultar borda |
+| `border_radius` | number | `4.5` | Raio da borda |
+| `locale` | string | `en` | Código do idioma |
+| `cache_seconds` | number | `21600` | Duração do cache |
+| `title_color` | hex | — | Cor do título |
+| `text_color` | hex | — | Cor do texto |
+| `icon_color` | hex | — | Cor dos ícones |
+| `bg_color` | hex | — | Fundo |
+| `border_color` | hex | — | Cor da borda |
 
 ---
 
 ### `/api/contributions` — Contributions Heatmap
 
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `username` | string | — | **Required.** GitHub username |
-| `theme` | string | `default` | Theme |
-| `hide_border` | boolean | `false` | Hide border |
-| `border_radius` | number | `4.5` | Border radius |
-| `custom_title` | string | — | Override title |
-| `cache_seconds` | number | `21600` | Cache duration |
-| `title_color` | hex | — | Title color |
-| `text_color` | hex | — | Text color |
-| `icon_color` | hex | — | Heatmap color (cell intensity) |
-| `bg_color` | hex | — | Background |
-| `border_color` | hex | — | Border color |
+| Parâmetro | Tipo | Padrão | Descrição |
+|-----------|------|--------|-----------|
+| `username` | string | — | **Obrigatório.** Nome de usuário do GitHub |
+| `theme` | string | `default` | Tema |
+| `hide_border` | boolean | `false` | Ocultar borda |
+| `border_radius` | number | `4.5` | Raio da borda |
+| `custom_title` | string | — | Título customizado |
+| `cache_seconds` | number | `21600` | Duração do cache |
+| `title_color` | hex | — | Cor do título |
+| `text_color` | hex | — | Cor do texto |
+| `icon_color` | hex | — | Cor do heatmap (intensidade das células) |
+| `bg_color` | hex | — | Fundo |
+| `border_color` | hex | — | Cor da borda |
 
 ---
 
 ### `/api/working-on` — Currently Working On
 
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `username` | string | — | **Required.** GitHub username |
-| `theme` | string | `default` | Theme |
-| `hide_border` | boolean | `false` | Hide border |
-| `border_radius` | number | `4.5` | Border radius |
-| `custom_title` | string | — | Override title |
-| `cache_seconds` | number | `21600` | Cache duration |
-| `title_color` | hex | — | Title color |
-| `text_color` | hex | — | Text color |
-| `icon_color` | hex | — | Icon color |
-| `bg_color` | hex | — | Background |
-| `border_color` | hex | — | Border color |
+| Parâmetro | Tipo | Padrão | Descrição |
+|-----------|------|--------|-----------|
+| `username` | string | — | **Obrigatório.** Nome de usuário do GitHub |
+| `theme` | string | `default` | Tema |
+| `hide_border` | boolean | `false` | Ocultar borda |
+| `border_radius` | number | `4.5` | Raio da borda |
+| `custom_title` | string | — | Título customizado |
+| `cache_seconds` | number | `21600` | Duração do cache |
+| `title_color` | hex | — | Cor do título |
+| `text_color` | hex | — | Cor do texto |
+| `icon_color` | hex | — | Cor dos ícones |
+| `bg_color` | hex | — | Fundo |
+| `border_color` | hex | — | Cor da borda |
 
 ---
 
 ### `/api/tech-stack` — Tech Stack
 
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `username` | string | — | **Required.** GitHub username |
-| `theme` | string | `default` | Theme |
-| `hide_border` | boolean | `false` | Hide border |
-| `border_radius` | number | `4.5` | Border radius |
-| `custom_title` | string | — | Override title |
-| `cache_seconds` | number | `21600` | Cache duration |
-| `title_color` | hex | — | Title color |
-| `text_color` | hex | — | Text color |
-| `icon_color` | hex | — | Category icon color |
-| `bg_color` | hex | — | Background |
-| `border_color` | hex | — | Border color |
+| Parâmetro | Tipo | Padrão | Descrição |
+|-----------|------|--------|-----------|
+| `username` | string | — | **Obrigatório.** Nome de usuário do GitHub |
+| `theme` | string | `default` | Tema |
+| `hide_border` | boolean | `false` | Ocultar borda |
+| `border_radius` | number | `4.5` | Raio da borda |
+| `custom_title` | string | — | Título customizado |
+| `cache_seconds` | number | `21600` | Duração do cache |
+| `title_color` | hex | — | Cor do título |
+| `text_color` | hex | — | Cor do texto |
+| `icon_color` | hex | — | Cor dos ícones de categoria |
+| `bg_color` | hex | — | Fundo |
+| `border_color` | hex | — | Cor da borda |
 
 ---
 
 ### `/api/compare` — Compare Users
 
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `user1` | string | — | **Required.** First GitHub username |
-| `user2` | string | — | **Required.** Second GitHub username |
-| `theme` | string | `default` | Theme |
-| `hide_border` | boolean | `false` | Hide border |
-| `border_radius` | number | `4.5` | Border radius |
-| `cache_seconds` | number | `21600` | Cache duration |
-| `title_color` | hex | — | Title color |
-| `text_color` | hex | — | Text color |
-| `icon_color` | hex | — | Icon color |
-| `bg_color` | hex | — | Background |
-| `border_color` | hex | — | Border color |
+| Parâmetro | Tipo | Padrão | Descrição |
+|-----------|------|--------|-----------|
+| `user1` | string | — | **Obrigatório.** Primeiro usuário |
+| `user2` | string | — | **Obrigatório.** Segundo usuário |
+| `theme` | string | `default` | Tema |
+| `hide_border` | boolean | `false` | Ocultar borda |
+| `border_radius` | number | `4.5` | Raio da borda |
+| `cache_seconds` | number | `21600` | Duração do cache |
+| `title_color` | hex | — | Cor do título |
+| `text_color` | hex | — | Cor do texto |
+| `icon_color` | hex | — | Cor dos ícones |
+| `bg_color` | hex | — | Fundo |
+| `border_color` | hex | — | Cor da borda |
 
 ---
 
 ### `/api/sponsors` — Sponsors / Support
 
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `username` | string | — | **Required.** GitHub username |
-| `theme` | string | `default` | Theme |
-| `hide_border` | boolean | `false` | Hide border |
-| `border_radius` | number | `4.5` | Border radius |
-| `custom_title` | string | — | Override title |
-| `cache_seconds` | number | `21600` | Cache duration |
-| `title_color` | hex | — | Title color |
-| `text_color` | hex | — | Text color |
-| `icon_color` | hex | — | Icon color |
-| `bg_color` | hex | — | Background |
-| `border_color` | hex | — | Border color |
+| Parâmetro | Tipo | Padrão | Descrição |
+|-----------|------|--------|-----------|
+| `username` | string | — | **Obrigatório.** Nome de usuário do GitHub |
+| `theme` | string | `default` | Tema |
+| `hide_border` | boolean | `false` | Ocultar borda |
+| `border_radius` | number | `4.5` | Raio da borda |
+| `custom_title` | string | — | Título customizado |
+| `cache_seconds` | number | `21600` | Duração do cache |
+| `title_color` | hex | — | Cor do título |
+| `text_color` | hex | — | Cor do texto |
+| `icon_color` | hex | — | Cor dos ícones |
+| `bg_color` | hex | — | Fundo |
+| `border_color` | hex | — | Cor da borda |
 
 ---
 
 ### `/api/activity-graph` — Activity Graph
 
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `username` | string | — | **Required.** GitHub username |
-| `theme` | string | `default` | Theme |
-| `hide_border` | boolean | `false` | Hide border |
-| `border_radius` | number | `4.5` | Border radius |
-| `custom_title` | string | — | Override title |
-| `cache_seconds` | number | `21600` | Cache duration |
-| `title_color` | hex | — | Title color |
-| `text_color` | hex | — | Text color |
-| `icon_color` | hex | — | Line and dot color |
-| `bg_color` | hex | — | Background |
-| `border_color` | hex | — | Border color |
+| Parâmetro | Tipo | Padrão | Descrição |
+|-----------|------|--------|-----------|
+| `username` | string | — | **Obrigatório.** Nome de usuário do GitHub |
+| `theme` | string | `default` | Tema |
+| `hide_border` | boolean | `false` | Ocultar borda |
+| `border_radius` | number | `4.5` | Raio da borda |
+| `custom_title` | string | — | Título customizado |
+| `cache_seconds` | number | `21600` | Duração do cache |
+| `title_color` | hex | — | Cor do título |
+| `text_color` | hex | — | Cor do texto |
+| `icon_color` | hex | — | Cor da linha e pontos |
+| `bg_color` | hex | — | Fundo |
+| `border_color` | hex | — | Cor da borda |
 
 ---
 
-### `/api/status/rate-limit` — Rate Limit Dashboard
+### `/api/status/rate-limit` — Dashboard de Rate Limit
 
-Returns JSON with token status, remaining rate limit quota, and health overview. No authentication required.
+Retorna JSON com status do token, quota restante de rate limit e visão geral de saúde. Sem autenticação necessária.
 
 ```
 GET https://readme.stats.guebly.com.br/api/status/rate-limit
@@ -476,41 +484,58 @@ GET https://readme.stats.guebly.com.br/api/status/rate-limit
 
 ---
 
-## Embed Mode
+## Performance e cache
 
-Share your card on any website, portfolio, or Notion page using the embed page:
+Os cards são servidos como SVG puro via funções serverless na Vercel, com cache agressivo para garantir performance:
 
-```
-https://readme.stats.guebly.com.br/embed.html?url=YOUR_CARD_URL
-```
+| Aspecto | Detalhe |
+|---------|---------|
+| **Cache padrão** | 6 horas (21.600s) para a maioria dos endpoints |
+| **Cache mínimo** | 6 horas — o parâmetro `cache_seconds` aceita valores >= 21600 |
+| **Repo Pin / Gist** | Cache de 30 minutos (1.800s) por atualizar com mais frequência |
+| **CDN** | Vercel Edge Network — os SVGs são servidos do edge mais próximo |
+| **Rate limit** | Cada PAT tem 5.000 req/hora na API do GitHub; use múltiplos tokens para escalar |
+| **Tamanho do SVG** | Geralmente < 10 KB — carrega mais rápido que qualquer imagem rasterizada |
 
-Or use query parameters directly:
-
-```
-https://readme.stats.guebly.com.br/embed.html?username=YOUR_USERNAME&type=stats&theme=guebly
-```
-
-Available types: `stats`, `top-langs`, `streak`, `social`, `trophy`, `contributions`, `activity-graph`, `working-on`, `tech-stack`, `sponsors`.
-
----
-
-## Sharing on Instagram, LinkedIn & more
-
-The site [readme.stats.guebly.com.br](https://readme.stats.guebly.com.br) includes a full visual generator with sharing built in:
-
-- **Download PNG (2x resolution)** — generate your card and click "Download PNG"
-- **Share on Twitter/X** — opens a tweet with the card link
-- **Share on LinkedIn** — opens the LinkedIn share dialog
-- **Share on WhatsApp** — opens a conversation with the message ready
-- **Instagram** — download the PNG and post directly in the app
+> **Dica:** Para forçar atualização imediata, adicione um parâmetro aleatório como `&v=2` para invalidar o cache do navegador. O cache do servidor respeita o TTL configurado.
 
 ---
 
-## Supported languages
+## Modo embed
 
-| Code | Language |
-|------|----------|
-| `en` | English (default) |
+Compartilhe seu card em qualquer site, portfólio ou Notion usando a página de embed:
+
+```
+https://readme.stats.guebly.com.br/embed.html?url=URL_DO_SEU_CARD
+```
+
+Ou use parâmetros de query diretamente:
+
+```
+https://readme.stats.guebly.com.br/embed.html?username=SEU_USUARIO&type=stats&theme=guebly
+```
+
+Tipos disponíveis: `stats`, `top-langs`, `streak`, `social`, `trophy`, `contributions`, `activity-graph`, `working-on`, `tech-stack`, `sponsors`.
+
+---
+
+## Compartilhamento em redes sociais
+
+O site [readme.stats.guebly.com.br](https://readme.stats.guebly.com.br) inclui um gerador visual completo com compartilhamento integrado:
+
+- **Download PNG (resolução 2x)** — gere seu card e clique em "Download PNG"
+- **Compartilhar no Twitter/X** — abre um tweet com o link do card
+- **Compartilhar no LinkedIn** — abre o diálogo de compartilhamento do LinkedIn
+- **Compartilhar no WhatsApp** — abre uma conversa com a mensagem pronta
+- **Instagram** — baixe o PNG e poste diretamente no app
+
+---
+
+## Idiomas suportados
+
+| Código | Idioma |
+|--------|--------|
+| `en` | English (padrão) |
 | `pt-br` | Português (BR) |
 | `es` | Español |
 | `de` | Deutsch |
@@ -526,76 +551,79 @@ The site [readme.stats.guebly.com.br](https://readme.stats.guebly.com.br) includ
 
 ## Self-hosting
 
-Want to run your own private instance? You can deploy directly to Vercel — no fork required.
+Quer rodar sua própria instância privada? Você pode fazer deploy direto na Vercel — sem necessidade de fork.
 
-### Prerequisites
+### Pré-requisitos
 
-- A [GitHub Personal Access Token](https://github.com/settings/tokens) (no scopes needed for public data; add `read:user` for private contribution counts)
-- A [Vercel](https://vercel.com) account (free tier works)
+- Um [GitHub Personal Access Token](https://github.com/settings/tokens) (nenhum scope necessário para dados públicos; adicione `read:user` para contagem de contribuições privadas)
+- Uma conta na [Vercel](https://vercel.com) (o plano gratuito funciona)
 
-### Deploy to Vercel
+### Deploy na Vercel
 
-1. Open the [Vercel dashboard](https://vercel.com/new) and import the repository
-2. Set the environment variables below
-3. Deploy — done
+```
+1. Abra o dashboard da Vercel em vercel.com/new
+2. Importe o repositório Guebly/guebly-readme-stats
+3. Configure as variáveis de ambiente (veja abaixo)
+4. Clique em Deploy — pronto!
+```
 
-### Environment variables
+### Variáveis de ambiente
 
-| Variable | Required | Description |
-|----------|----------|-------------|
-| `PAT_1` | ✅ | GitHub Personal Access Token |
-| `PAT_2` … `PAT_10` | ❌ | Extra tokens for request load-balancing |
-| `MULTI_PAGE_STARS` | ❌ | Set `true` for accurate star counts (slower) |
-| `BLOCKED_USERS` | ❌ | Comma-separated list of blocked usernames |
-| `ALLOWED_USERS` | ❌ | Comma-separated list — restricts access to these users only |
-| `EXCLUDE_REPOS` | ❌ | Comma-separated repository names to exclude from stats |
+| Variável | Obrigatório | Descrição |
+|----------|-------------|-----------|
+| `PAT_1` | Sim | GitHub Personal Access Token |
+| `PAT_2` ... `PAT_10` | Não | Tokens extras para balanceamento de carga |
+| `MULTI_PAGE_STARS` | Não | Defina `true` para contagem precisa de estrelas (mais lento) |
+| `BLOCKED_USERS` | Não | Lista de usuários bloqueados (separados por vírgula) |
+| `ALLOWED_USERS` | Não | Lista de usuários permitidos — restringe o acesso apenas a eles |
+| `EXCLUDE_REPOS` | Não | Nomes de repositórios a excluir das estatísticas (separados por vírgula) |
 
-### Multiple tokens
+### Múltiplos tokens
 
-Set `PAT_2`, `PAT_3`, … `PAT_10` to distribute requests across tokens and avoid GitHub API rate limiting.
+Configure `PAT_2`, `PAT_3`, ... `PAT_10` para distribuir requisições entre tokens e evitar rate limiting da API do GitHub. Cada token adiciona 5.000 requisições/hora de capacidade.
 
-### Local development
+### Desenvolvimento local
 
 ```bash
 git clone https://github.com/Guebly/guebly-readme-stats
 cd guebly-readme-stats
 npm install
-cp .env.example .env   # fill in PAT_1
-npm run dev            # starts Express server on port 9000
+cp .env.example .env   # preencha PAT_1
+npm run dev             # inicia servidor Express na porta 9000
 ```
 
-Preview a card: `http://localhost:9000/api?username=YOUR_USERNAME`
+Pré-visualize um card: `http://localhost:9000/api?username=SEU_USUARIO`
 
 ---
 
-## Tech stack
+## Stack técnica
 
-| Layer | Technology |
-|-------|-----------|
-| Frontend | Vue 3 + Vite (visual card generator) |
+| Camada | Tecnologia |
+|--------|-----------|
+| Frontend | Vue 3 + Vite (gerador visual de cards) |
 | Backend | Node.js 22+ serverless functions |
 | API | GitHub GraphQL API + WakaTime API |
-| Rendering | Server-side SVG generation |
-| Hosting | Vercel (free tier) |
+| Renderização | Geração de SVG server-side |
+| Hospedagem | Vercel (plano gratuito) |
 
 ---
 
-## Contributing
+## Contribuindo
 
-Have an idea for a new theme, a new card type, or a bug fix? Contributions that improve the platform for everyone are welcome.
+Tem uma ideia para um novo tema, um novo tipo de card ou uma correção de bug? Contribuições que melhoram a plataforma para todos são bem-vindas.
 
-- **New themes** — follow the guide in [CONTRIBUTING.md](./CONTRIBUTING.md)
-- **Bug reports / feature requests** — [open an issue](https://github.com/Guebly/guebly-readme-stats/issues)
-- **Pull requests** — keep them focused and describe what problem they solve
-
----
-
-## Security
-
-To report security vulnerabilities, see [SECURITY.md](./SECURITY.md).
+- **Novos temas** — siga o guia em [CONTRIBUTING.md](./CONTRIBUTING.md)
+- **Bugs / sugestões** — [abra uma issue](https://github.com/Guebly/guebly-readme-stats/issues)
+- **Pull requests** — mantenha-os focados e descreva qual problema resolvem
 
 ---
 
-## License
+## Segurança
+
+Para reportar vulnerabilidades de segurança, veja [SECURITY.md](./SECURITY.md).
+
+---
+
+## Licença
 
 MIT © [Guebly](https://guebly.com.br)
