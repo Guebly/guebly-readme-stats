@@ -41,7 +41,7 @@ const languageBar = (langName, langColor) => {
   return `
     <g data-testid="primary-lang">
       <circle data-testid="lang-color" cx="0" cy="-5" r="6" fill="${langColor}" />
-      <text data-testid="lang-name" class="gray" x="15">${langName}</text>
+      <text data-testid="lang-name" class="gray" x="15">${escapeHTML(langName)}</text>
     </g>
     `;
 };
@@ -177,7 +177,7 @@ const buildErrorCard = ({
     }</text>
     <text data-testid="message" x="25" y="55" class="text small">
       <tspan x="25" dy="18">${escapeHTML(message)}</tspan>
-      <tspan x="25" dy="18" class="gray">${secondaryMessage}</tspan>
+      <tspan x="25" dy="18" class="gray">${secondaryMessage ? escapeHTML(secondaryMessage) : ""}</tspan>
     </text>
     </svg>
   `;
