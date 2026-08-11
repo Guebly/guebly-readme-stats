@@ -16,7 +16,10 @@ import sponsorsCard from "./api/sponsors.js";
 import activityGraphCard from "./api/activity-graph.js";
 import rateLimitStatus from "./api/status/rate-limit.js";
 import express from "express";
+import path from "path";
+import { fileURLToPath } from "url";
 
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
 const router = express.Router();
 
@@ -38,6 +41,14 @@ router.get("/activity-graph", activityGraphCard);
 router.get("/status/rate-limit", rateLimitStatus);
 
 app.use("/api", router);
+
+// Healthcheck (usado pelo health gate do deploy).
+app.get("/health", (req, res) => res.status(200).send("ok"));
+
+// Serve o frontend estático (build do Vite em ./dist) + fallback SPA.
+const distDir = path.join(__dirname, "dist");
+app.use(express.static(distDir));
+app.get("*", (req, res) => res.sendFile(path.join(distDir, "index.html")));
 
 const port = process.env.PORT || process.env.port || 9000;
 app.listen(port, "0.0.0.0", () => {
