@@ -48,7 +48,8 @@ app.get("/health", (req, res) => res.status(200).send("ok"));
 // Serve o frontend estático (build do Vite em ./dist) + fallback SPA.
 const distDir = path.join(__dirname, "dist");
 app.use(express.static(distDir));
-app.get("*", (req, res) => res.sendFile(path.join(distDir, "index.html")));
+// Fallback SPA (Express 5: rota sem path em vez de "*").
+app.use((req, res) => res.sendFile(path.join(distDir, "index.html")));
 
 const port = process.env.PORT || process.env.port || 9000;
 app.listen(port, "0.0.0.0", () => {
