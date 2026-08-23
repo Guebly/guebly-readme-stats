@@ -354,11 +354,44 @@ const enc = (v) => encodeURIComponent(v.trim());
 // ── Preview URL (cache-busted so CDN never serves stale layout) ────
 // generatedUrl stays clean for copy-paste; previewUrl adds a per-session
 // revision token that changes whenever the config changes.
+//
+// ROOT CAUSE of the "preview stuck loading forever" bug: the cards returned
+// by the API use CSS keyframe animations (fade-in for text, a stroke-dashoffset
+// draw-in for the rank circle) with `animation-fill-mode: forwards`. Those
+// animations reliably play to completion when the SVG is opened as its own
+// top-level document, but when the exact same SVG is embedded via <img> (as
+// the live preview does) the browser paints only the animation's *initial*
+// keyframe (text at opacity:0, rank ring barely drawn) and never advances —
+// even though the request finishes and img.complete/naturalWidth are correct.
+// Visually that first keyframe looks exactly like a spinner stuck forever.
+// The API already exposes `disable_animations=true` for precisely this case
+// (used by anything that needs a static render, e.g. PNG export). We only
+// apply it to the live preview — generatedUrl/codeOutput (what gets copied
+// into the user's README) is left untouched so the exported card keeps its
+// normal animation when GitHub renders it.
+//
+// The revision bump is also debounced: generatedUrl recomputes on every
+// single keystroke (each character of the username), and the <img> below is
+// keyed on previewUrl, so without debouncing, every keystroke destroyed and
+// recreated the <img> with a brand new cache-busted URL — firing one live
+// request per character. Debouncing means the <img> is only (re)created once
+// the user actually pauses typing.
 const previewRev = shallowRef(0);
 const previewUrl = computed(() =>
-  generatedUrl.value ? generatedUrl.value + "&_v=" + previewRev.value : "",
+  generatedUrl.value
+    ? generatedUrl.value + "&disable_animations=true&_v=" + previewRev.value
+    : "",
 );
-watch(generatedUrl, () => { previewRev.value = Date.now(); }, { immediate: true });
+let previewDebounceTimer = null;
+watch(generatedUrl, () => {
+  if (previewDebounceTimer) clearTimeout(previewDebounceTimer);
+  previewDebounceTimer = setTimeout(() => {
+    previewRev.value = Date.now();
+  }, 500);
+}, { immediate: true });
+onUnmounted(() => {
+  if (previewDebounceTimer) clearTimeout(previewDebounceTimer);
+});
 
 // ── Code output ────────────────────────
 const codeOutput = computed(() => {
