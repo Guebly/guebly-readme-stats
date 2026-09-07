@@ -81,7 +81,7 @@ Requisição HTTP → api/*.js → checkAccess() → fetcher → card renderer �
 6. Adicionar traduções em `src/translations.js`
 7. Adicionar ao frontend: `Generator.vue` e `ApiDocs.vue`
 8. Criar testes em `tests/novo-card.test.js`
-9. Documentar em `README.md` e `README.pt-br.md`
+9. Documentar em `README.md` e `README.en.md`
 
 ## Sistema de temas
 

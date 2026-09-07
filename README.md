@@ -12,7 +12,7 @@
 [![Node 22+](https://img.shields.io/badge/Node.js-22+-339933?style=for-the-badge&logo=node.js&logoColor=white)](https://nodejs.org)
 [![Feito por Guebly](https://img.shields.io/badge/Feito_por-Guebly-0D1117?style=for-the-badge&logo=github)](https://guebly.com.br)
 
-**[English version](./README.pt-br.md)**
+**[English version](./README.en.md)**
 
 </div>
 

@@ -4,6 +4,14 @@ Todas as mudanças relevantes do projeto estão documentadas aqui.
 
 ---
 
+## v2.1.2 — 2026-09-07
+
+### Documentação
+- Documentação atualizada: README com stack real, URL de acesso e instruções de setup
+- Corrigido nome do arquivo de README em inglês (`README.pt-br.md` continha conteúdo em inglês, apesar do nome sugerir português) — renomeado para `README.en.md`, com o link "English version" em `README.md` corrigido
+
+---
+
 ## v2.1.1 — 2026-06-09
 
 ### Segurança
